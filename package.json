@@ -22,7 +22,6 @@
     "@nestjs/schedule": "^1.1.0",
     "@nestjs/typeorm": "^8.0.3",
     "axios-https-proxy-fix": "^0.17.1",
-    "pg": "^8.7.3",
     "typeorm": "^0.2.45",
     "typeorm-naming-strategies": "^4.1.0",
     "module-alias": "^2.2.2"
