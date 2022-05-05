@@ -1,0 +1,10 @@
+{
+  "id": "gods-unchained-player-info",
+  "gameId": "gods-unchained",
+  "name": "Player Info",
+  "github": "https://github.com/earnkeeper/ekp-gods-unchained-player-info",
+  "image": "/static/market.jpg",
+  "mainPage": "player",
+  "description": "What is your collection value? Want to browse cards as a power user? This is the plugin",
+  "features": ["Player Collection", "NFT Browser"]
+}

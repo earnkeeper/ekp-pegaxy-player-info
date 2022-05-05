@@ -1,0 +1,6 @@
+configVersion: 1
+project: gods-unchained-player-info
+---
+image: app
+dockerfile: Dockerfile
+context: .
