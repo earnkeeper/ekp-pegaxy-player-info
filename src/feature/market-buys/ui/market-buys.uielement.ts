@@ -1,31 +1,24 @@
+import { pageHeader } from '@/util';
 import {
-  Button,
   Card,
   Col,
   collection,
   Container,
   Datatable,
   documents,
-  Form,
   Fragment,
   GridTile,
   Image,
-  Input,
   isBusy,
-  PageHeaderTile,
   Row,
   Span,
   UiElement,
 } from '@earnkeeper/ekp-sdk';
-import { imageLabelCell } from '../../../util/ui/imageLabelCell';
+import { imageLabelCell } from '../../../util/ui/image-label-cell';
 import { MarketBuyDocument } from './market-buys.document';
 export default function element(): UiElement {
   return Container({
-    children: [
-      titleRow(),
-      cardsRow(),
-      tableRow(),
-    ],
+    children: [titleRow(), cardsRow(), tableRow()],
   });
 }
 
@@ -37,12 +30,7 @@ function titleRow() {
         children: [
           Col({
             className: 'col-auto',
-            children: [
-              PageHeaderTile({
-                title: 'Market Buys',
-                icon: 'cil-cart',
-              }),
-            ],
+            children: [pageHeader('cil-cart', 'Market Buys')],
           }),
         ],
       }),
@@ -50,8 +38,8 @@ function titleRow() {
   });
 }
 function cardsRow() {
-return Card({
-  className: 'mt-2',
+  return Card({
+    className: 'mt-2',
     children: [
       Col({
         className: 'col-4 col-md-auto',

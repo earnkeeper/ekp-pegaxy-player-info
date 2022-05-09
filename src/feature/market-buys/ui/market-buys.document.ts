@@ -9,6 +9,6 @@ export class MarketBuyDocument extends DocumentDto {
   readonly fiatSymbol: string;
   readonly pegaId: number;
   readonly pegaName: string;
-  readonly priceFiat: string;
+  readonly priceFiat: number;
   readonly timestamp: number;
 }
