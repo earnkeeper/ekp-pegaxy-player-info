@@ -1,2 +1,2 @@
-export * from './market.repository';
-export * from './market.schema';
+export * from './market-buy.repository';
+export * from './market-buy.schema';

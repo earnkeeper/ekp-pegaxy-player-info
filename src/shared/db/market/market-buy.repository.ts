@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Market } from './market.schema';
+import { MarketBuy } from './market-buy.schema';
 
 @Injectable()
-export class MarketRepository {
+export class MarketBuyRepository {
   constructor(
-    @InjectRepository(Market)
-    public marketRepository: Repository<Market>,
+    @InjectRepository(MarketBuy)
+    public marketRepository: Repository<MarketBuy>,
   ) {}
 
-  async findLatest(): Promise<Market> {
-    const results = await this.marketRepository.find({ });
+  async findLatest(): Promise<MarketBuy> {
+    const results = await this.marketRepository.find({});
 
     if (!results?.length) {
       return undefined;
@@ -20,7 +20,7 @@ export class MarketRepository {
     return results[0];
   }
 
-  async save(models: Market[]): Promise<void> {
+  async save(models: MarketBuy[]): Promise<void> {
     if (!models?.length) {
       return;
     }

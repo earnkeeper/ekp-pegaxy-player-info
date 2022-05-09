@@ -1,13 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { MarketBuy, MarketBuyRepository } from './market';
 import { Pega, PegaRepository } from './pega';
-import { Market, MarketRepository } from './market';
 import { Player, PlayerRepository } from './player';
-;
-
 @Module({
-  imports: [TypeOrmModule.forFeature([Player, Pega, Market])],
-  providers: [PlayerRepository, PegaRepository , MarketRepository ],
-  exports: [PlayerRepository, PegaRepository , MarketRepository ],
+  imports: [TypeOrmModule.forFeature([Player, Pega, MarketBuy])],
+  providers: [PlayerRepository, PegaRepository, MarketBuyRepository],
+  exports: [PlayerRepository, PegaRepository, MarketBuyRepository],
 })
 export class DbModule {}

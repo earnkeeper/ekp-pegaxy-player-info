@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity({ name: 'players' })
-export class Player {
+@Entity({ name: 'market_buys' })
+export class MarketBuy {
   @PrimaryColumn()
   readonly id: string;
 
@@ -12,11 +12,14 @@ export class Player {
   readonly updated: Date;
 
   @Column()
-  readonly address: string;
+  readonly buyer_address: string;
 
   @Column()
-  readonly earned_to_date: string;
+  readonly price: string;
 
   @Column()
-  readonly earned_to_date_coin_id: string;
+  readonly price_coin_id: string;
+
+  @Column()
+  readonly pega_token_id: string;
 }

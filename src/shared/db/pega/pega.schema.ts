@@ -1,27 +1,36 @@
-import { Column, Entity, Index, PrimaryColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity({ name: 'pega' })
+@Entity({ name: 'pegas' })
 export class Pega {
   @PrimaryColumn()
-  readonly id: number;
+  readonly id: string;
 
-  @Column()
-  readonly created: string;
+  @Column({ type: 'timestamptz' })
+  readonly created: Date;
 
-  @Column()
-  readonly updated: string;
+  @Column({ type: 'timestamptz' })
+  readonly updated: Date;
 
   @Column()
   readonly name: string;
 
   @Column()
-  readonly cost: number;
+  readonly cost: string;
 
   @Column()
-  readonly market_value: number;
+  readonly cost_coin_id: string;
 
   @Column()
-  readonly earned_to_date: number;
+  readonly market_value: string;
+
+  @Column()
+  readonly market_value_coin_id: string;
+
+  @Column()
+  readonly earned_to_date: string;
+
+  @Column()
+  readonly earned_to_date_coin_id: string;
 
   @Column()
   readonly place_rate: number;
