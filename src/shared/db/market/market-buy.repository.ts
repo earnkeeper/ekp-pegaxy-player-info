@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { result } from 'lodash';
 import { Repository } from 'typeorm';
 import { MarketBuy } from './market-buy.schema';
 
@@ -8,14 +7,16 @@ import { MarketBuy } from './market-buy.schema';
 export class MarketBuyRepository {
   constructor(
     @InjectRepository(MarketBuy)
-    public marketRepository: Repository<MarketBuy>,
+    public repo: Repository<MarketBuy>,
   ) {}
 
-  async findAll(): Promise<MarketBuy> {
-
-  let results= this.marketRepository.find();
-
-  return results[0];
+  async findAll(limit: number): Promise<MarketBuy[]> {
+    return this.repo.find({
+      order: {
+        created: 'DESC',
+      },
+      take: limit,
+    });
   }
 
   async save(models: MarketBuy[]): Promise<void> {
@@ -23,6 +24,6 @@ export class MarketBuyRepository {
       return;
     }
 
-    await this.marketRepository.upsert(models, ['id']);
+    await this.repo.upsert(models, ['id']);
   }
 }

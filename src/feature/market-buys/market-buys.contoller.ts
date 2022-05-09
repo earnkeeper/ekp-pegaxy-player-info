@@ -13,10 +13,10 @@ import {
 } from '@earnkeeper/ekp-sdk-nestjs';
 import { Injectable } from '@nestjs/common';
 import { MarketBuysService } from './market-buys.service';
-import { MarketBuysDocument } from './ui/market-buys.document';
+import { MarketBuyDocument } from './ui/market-buys.document';
 import card from './ui/market-buys.uielement';
 
-const COLLECTION_NAME = collection(MarketBuysDocument);
+const COLLECTION_NAME = collection(MarketBuyDocument);
 const PATH = 'market';
 
 @Injectable()
@@ -52,10 +52,16 @@ export class MarketBuysController extends AbstractController {
       return;
     }
 
+    const currency = event.state.client.selectedCurrency;
+
     await this.clientService.emitBusy(event, COLLECTION_NAME);
 
     try {
-      const documents = await this.marketBuysService.fetchMarketDocument();
+      const documents = await this.marketBuysService.fetchMarketDocument(
+        currency,
+      );
+
+      console.log(documents);
 
       this.clientService.emitDocuments(event, COLLECTION_NAME, documents);
     } catch (error) {

@@ -21,5 +21,5 @@ export class MarketBuy {
   readonly price_coin_id: string;
 
   @Column()
-  readonly pega_token_id: string;
+  readonly pega_token_id: number;
 }

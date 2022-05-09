@@ -18,7 +18,7 @@ import {
   UiElement,
 } from '@earnkeeper/ekp-sdk';
 import { imageLabelCell } from '../../../util/ui/imageLabelCell';
-import { MarketBuysDocument } from './market-buys.document';
+import { MarketBuyDocument } from './market-buys.document';
 export default function element(): UiElement {
   return Container({
     children: [
@@ -71,11 +71,11 @@ export function tableRow() {
     children: [
       Datatable({
         defaultSortFieldId: 'name',
-        data: documents(MarketBuysDocument),
+        data: documents(MarketBuyDocument),
         pointerOnHover: true,
         showExport: true,
         showLastUpdated: true,
-        busyWhen: isBusy(collection(MarketBuysDocument)),
+        busyWhen: isBusy(collection(MarketBuyDocument)),
         defaultView: {
           xs: 'grid',
           lg: 'column',
