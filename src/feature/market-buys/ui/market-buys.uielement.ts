@@ -70,7 +70,7 @@ export function tableRow() {
   return Fragment({
     children: [
       Datatable({
-        defaultSortFieldId: 'name',
+        defaultSortFieldId: 'timestamp',
         data: documents(MarketBuyDocument),
         pointerOnHover: true,
         showExport: true,
@@ -83,81 +83,58 @@ export function tableRow() {
         gridView: {
           tileWidth: [12, 6, 4, 3],
           tile: GridTile({
-            image: Image({
-              className: 'card-img-top',
-              src: '$.cardArtUrl',
-            }),
             details: [
               {
-                label: 'Name',
-                value: '$.name',
+                label: 'Timestamp',
+                value: '$.timestamp',
               },
               {
-                label: 'God',
-                value: '$.god',
+                label: 'Pega Name',
+                value: '$.pegaName',
               },
               {
-                label: 'Rarity',
-                value: '$.rarity',
+                label: 'Buyer',
+                value: '$.buyer',
               },
               {
-                label: 'Mana',
-                value: '$.mana',
+                label: 'Pega ID',
+                value: '$.pegaId',
               },
               {
-                label: 'Type',
-                value: '$.type',
-              },
-              {
-                label: 'Set',
-                value: '$.set',
-              },
+                label: 'price Fiat',
+                value: '$.priceFiat',
+              }
             ],
           }),
         },
 
         columns: [
           {
-            id: 'name',
-            searchable: true,
-            sortable: true,
-            cell: imageLabelCell('$.cardArtUrl', '$.name'),
-          },
-          {
-            id: 'god',
+            id: 'timestamp',
             sortable: true,
             width: '140px',
           },
           {
-            id: 'rarity',
+            id: 'pegaName',
             sortable: true,
             width: '140px',
           },
           {
-            id: 'set',
+            id: 'buyer',
+            sortable: true,
+            width: '400px',
+          },
+          {
+            id: 'pegaId',
+            sortable: true,
+            width: '100px',
+          },
+          {
+            id: 'priceFiat',
             sortable: true,
             width: '140px',
           },
-          {
-            id: 'type',
-            sortable: true,
-            width: '140px',
-          },
-          {
-            id: 'mana',
-            sortable: true,
-            width: '80px',
-          },
-          {
-            id: 'health',
-            sortable: true,
-            width: '80px',
-          },
-          {
-            id: 'attack',
-            sortable: true,
-            width: '80px',
-          },
+         
         ],
       }),
     ],
