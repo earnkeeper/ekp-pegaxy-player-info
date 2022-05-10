@@ -10,7 +10,7 @@ export class MarketBuyRepository {
     public repo: Repository<MarketBuy>,
   ) {}
 
-  async findAll(limit: number): Promise<MarketBuy[]> {
+  async findAll(limit?: number): Promise<MarketBuy[]> {
     return this.repo.find({
       order: {
         created: 'DESC',

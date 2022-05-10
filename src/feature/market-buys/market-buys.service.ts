@@ -1,4 +1,4 @@
-import { MarketBuy, MarketBuyRepository } from '@/shared/db';
+import { MarketBuy, MarketBuyRepository, PegaRepository } from '@/shared/db';
 import { CurrencyDto } from '@earnkeeper/ekp-sdk';
 import { CoingeckoService, CoinPrice } from '@earnkeeper/ekp-sdk-nestjs';
 import { Injectable } from '@nestjs/common';
@@ -14,10 +14,26 @@ export class MarketBuysService {
     private coingeckoService: CoingeckoService,
   ) {}
 
-  async fetchMarketDocument(
+  async fetchMarketHistogram(marketDocuments: MarketBuyDocument[]) {
+    const documents = _.chain(marketDocuments)
+      .filter((it) => it.priceFiat < 10000)
+      .groupBy((it) => moment.unix(it.timestamp).startOf('hour').unix())
+      .mapValues((values, key) => ({
+        id: key,
+        count: values.length,
+        timestamp: Number(key) * 1000,
+        price: _.sumBy(values, 'priceFiat') / values.length,
+      }))
+      .values()
+      .value();
+
+    return documents;
+  }
+
+  async fetchMarketDocuments(
     currency: CurrencyDto,
   ): Promise<MarketBuyDocument[]> {
-    const results = await this.marketBuyRepository.findAll(100);
+    const results = await this.marketBuyRepository.findAll();
 
     const coinIds = _.chain(results)
       .map((it) => it.price_coin_id)

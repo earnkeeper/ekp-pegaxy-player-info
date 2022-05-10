@@ -12,11 +12,13 @@ import {
   logger,
 } from '@earnkeeper/ekp-sdk-nestjs';
 import { Injectable } from '@nestjs/common';
+import _ from 'lodash';
 import { MarketBuysService } from './market-buys.service';
 import { MarketBuyDocument } from './ui/market-buys.document';
 import card from './ui/market-buys.uielement';
 
 const COLLECTION_NAME = collection(MarketBuyDocument);
+const CHART_COLLECTION_NAME = 'PegaxyMarketChart';
 const PATH = 'market';
 
 @Injectable()
@@ -57,13 +59,25 @@ export class MarketBuysController extends AbstractController {
     await this.clientService.emitBusy(event, COLLECTION_NAME);
 
     try {
-      const documents = await this.marketBuysService.fetchMarketDocument(
+      const documents = await this.marketBuysService.fetchMarketDocuments(
         currency,
       );
 
-      console.log(documents);
+      await this.clientService.emitDocuments(
+        event,
+        COLLECTION_NAME,
+        _.slice(documents, 0, 100),
+      );
 
-      this.clientService.emitDocuments(event, COLLECTION_NAME, documents);
+      const chartDocuments = await this.marketBuysService.fetchMarketHistogram(
+        documents,
+      );
+
+      await this.clientService.emitDocuments(
+        event,
+        CHART_COLLECTION_NAME,
+        chartDocuments,
+      );
     } catch (error) {
       this.apmService.captureError(error);
       logger.error('Error occurred while handling event', error);
