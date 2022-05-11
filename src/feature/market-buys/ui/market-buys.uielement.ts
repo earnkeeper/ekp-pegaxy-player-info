@@ -8,11 +8,14 @@ import {
   documents,
   formatAge,
   formatCurrency,
+  formatTemplate,
   Fragment,
+  Image,
   isBusy,
   jsonArray,
   Row,
   Rpc,
+  Span,
   UiElement,
 } from '@earnkeeper/ekp-sdk';
 import { MarketBuyDocument } from './market-buys.document';
@@ -115,7 +118,27 @@ export function tableRow() {
           {
             id: 'pegaName',
             sortable: true,
-            width: '200px',
+            width: '300px',
+            cell: Row({
+              children: [
+                Col({
+                  className: 'col-auto pr-0',
+                  children: [
+                    Image({
+                      height: '32px',
+                      src: formatTemplate(
+                        'https://cdn.pegaxy.io/data/pega/{{ pegaAvatarId }}',
+                        { pegaAvatarId: '$.pegaAvatarId' },
+                      ),
+                    }),
+                  ],
+                }),
+                Col({
+                  className: 'col-auto my-auto font-medium-1',
+                  children: [Span({ content: '$.pegaName' })],
+                }),
+              ],
+            }),
           },
           {
             id: 'buyer',

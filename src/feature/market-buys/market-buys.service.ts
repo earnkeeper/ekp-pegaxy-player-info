@@ -1,4 +1,4 @@
-import { MarketBuy, MarketBuyRepository, PegaRepository } from '@/shared/db';
+import { MarketBuy, MarketBuyRepository } from '@/shared/db';
 import { CurrencyDto } from '@earnkeeper/ekp-sdk';
 import { CoingeckoService, CoinPrice } from '@earnkeeper/ekp-sdk-nestjs';
 import { Injectable } from '@nestjs/common';
@@ -74,7 +74,8 @@ export class MarketBuysService {
           fiatSymbol: currency.symbol,
           id: result.id,
           pegaId: result.pega_token_id,
-          pegaName: '',
+          pegaName: result.pega?.name,
+          pegaAvatarId: result.pega?.avatar_id_1,
           priceFiat,
           timestamp: result.created.getTime() / 1000,
           updated: now,

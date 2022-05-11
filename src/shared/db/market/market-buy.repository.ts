@@ -11,12 +11,12 @@ export class MarketBuyRepository {
   ) {}
 
   async findAll(limit?: number): Promise<MarketBuy[]> {
-    return this.repo.find({
-      order: {
-        created: 'DESC',
-      },
-      take: limit,
-    });
+    return await this.repo
+      .createQueryBuilder('mb')
+      .innerJoinAndSelect('mb.pega', 'p')
+      .orderBy('mb.created', 'DESC')
+      .take(limit)
+      .getMany();
   }
 
   async save(models: MarketBuy[]): Promise<void> {

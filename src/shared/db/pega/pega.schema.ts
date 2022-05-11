@@ -1,9 +1,11 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity({ name: 'pegas' })
+@Entity({ name: Pega.TABLE_NAME })
 export class Pega {
+  static TABLE_NAME = 'pegas';
+
   @PrimaryColumn()
-  readonly id: string;
+  readonly id: number;
 
   @Column({ type: 'timestamptz' })
   readonly created: Date;
@@ -40,4 +42,10 @@ export class Pega {
 
   @Column()
   readonly owner_player_id: string;
+
+  @Column()
+  readonly avatar_id_1: string;
+
+  @Column()
+  readonly avatar_id_2: string;
 }

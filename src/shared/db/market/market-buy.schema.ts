@@ -1,7 +1,10 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
+import { Pega } from '../pega/pega.schema';
 
-@Entity({ name: 'market_buys' })
+@Entity({ name: MarketBuy.TABLE_NAME })
 export class MarketBuy {
+  static TABLE_NAME = 'market_buys';
+
   @PrimaryColumn()
   readonly id: string;
 
@@ -22,4 +25,8 @@ export class MarketBuy {
 
   @Column()
   readonly pega_token_id: number;
+
+  @OneToOne(() => Pega)
+  @JoinColumn({ name: 'pega_token_id', referencedColumnName: 'id' })
+  readonly pega?: Pega;
 }

@@ -66,7 +66,10 @@ export class MarketBuysController extends AbstractController {
       await this.clientService.emitDocuments(
         event,
         COLLECTION_NAME,
-        _.slice(documents, 0, 100),
+        _.chain(documents)
+          .filter((it) => !!it.pegaName)
+          .slice(0, 100)
+          .value(),
       );
 
       const chartDocuments = await this.marketBuysService.fetchMarketHistogram(
