@@ -19,6 +19,7 @@ PlayerUI
 PlayerController --> PlayerService
 PlayerController --> PlayerUI
 PlayerService --> PegaDocument
+PlayerService --> ApiService
 PlayerController --> PegaDocument
 PlayerUI --> PegaDocument
 
@@ -44,6 +45,7 @@ PlayersController --> PlayersService
 PlayersController --> PlayersUI
 PlayersController --> PlayersDocument
 PlayersService --> PlayersDocument
+PlayersService --> ApiService
 PlayersUI --> PlayersDocument
 
 // *** MARKET BUYS ***
@@ -74,12 +76,7 @@ MarketBuysController --> MarketBuysUI
 MarketBuysController --> MarketBuysDocument
 MarketBuysService --> MarketBuysDocument
 MarketBuysUI --> MarketBuysDocument
-
-// *** DB MODULE***
-DbModule
-	-PlayerRepository
-	-PegaRepository
-	-MarketBuyRepository
+MarketBuysService --> MarketBuyRepository 
 
 // *** MARKET BUY DB ***
 MarketBuy
@@ -95,7 +92,6 @@ MarketBuyRepository
 	-repo: Repository
 	+findAll()
 	+save()
-DbModule--> MarketBuyRepository
 MarketBuyRepository -->MarketBuy
 // *** PEGA DB ***
 Pega
@@ -117,7 +113,6 @@ Pega
 PegaRepository
 	+findLatest()
 	+save()
-DbModule--> PegaRepository
 PegaRepository -->Pega
 // *** PLAYER DB ***
 Player
@@ -130,7 +125,6 @@ Player
 PlayerRepository
 	+findLatest()
 	+save()
-DbModule--> PlayerRepository
 PlayerRepository -->Player
 // *** API SERVICE ***
 ApiService
