@@ -76,13 +76,13 @@ MarketBuysController --> MarketBuysDocument
 MarketBuysService --> MarketBuysDocument
 MarketBuysUI --> MarketBuysDocument
  
-// *** DB MOULDE
+// *** DB MODULE
 DbModule
 	-PlayerRepository
 	-PegaRepository
 	-MarketBuyRepository
  
-// *** MARKET BUY ***
+// *** MARKET BUY DB***
 MarketBuy
 	-id: string
 	-created: Date
@@ -99,7 +99,7 @@ MarketBuyRepository
 DbModule--> MarketBuyRepository
 MarketBuyRepository -->MarketBuy
  
-// ***PEGA ***
+// ***PEGA DB***
 Pega
 	-id: number
 	-created: Date
@@ -122,7 +122,7 @@ PegaRepository
 DbModule--> PegaRepository
 PegaRepository -->Pega
  
-// *** PLAYER ***
+// *** PLAYER DB***
  
 Player
 	-id: string
@@ -137,7 +137,7 @@ PlayerRepository
 DbModule--> PlayerRepository
 PlayerRepository -->Player
  
-// *** API ***
+// *** API SERVICE ***
  
 ApiService
 	-configService: EkConfigService
@@ -146,6 +146,9 @@ ApiService
 	+fetchUserAssets()
 	+fetchUserOwnedPegas()
 	+fetchUserEarnings()
+
+// *** API SERVICE ***
+
 ApiBuilder
 	-configService: EkConfigService
 	-cacheService: CacheService
