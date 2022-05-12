@@ -1,4 +1,4 @@
-// *** PLAYER ***
+// *** PLAYER CONTROLLER ***
 PlayerController
 	-clientService: ClientService
 	-playersService: PlayersService
@@ -21,8 +21,8 @@ PlayerController --> PlayerUI
 PlayerService --> PegaDocument
 PlayerController --> PegaDocument
 PlayerUI --> PegaDocument
- 
-// *** PLAYER ***
+
+// *** PLAYERS CONTROLLER ***
 PlayersController
 	-clientService: ClientService
 	-playersService: PlayersService
@@ -45,7 +45,7 @@ PlayersController --> PlayersUI
 PlayersController --> PlayersDocument
 PlayersService --> PlayersDocument
 PlayersUI --> PlayersDocument
- 
+
 // *** MARKET BUYS ***
 MarketBuysController
 	-clientService: ClientService
@@ -69,20 +69,19 @@ MarketBuysDocument
 	-pegaAvatarId: string
 MarketBuysUI
 	-element()
- 
 MarketBuysController --> MarketBuysService
 MarketBuysController --> MarketBuysUI
 MarketBuysController --> MarketBuysDocument
 MarketBuysService --> MarketBuysDocument
 MarketBuysUI --> MarketBuysDocument
- 
-// *** DB MODULE
+
+// *** DB MODULE***
 DbModule
 	-PlayerRepository
 	-PegaRepository
 	-MarketBuyRepository
- 
-// *** MARKET BUY DB***
+
+// *** MARKET BUY DB ***
 MarketBuy
 	-id: string
 	-created: Date
@@ -98,8 +97,7 @@ MarketBuyRepository
 	+save()
 DbModule--> MarketBuyRepository
 MarketBuyRepository -->MarketBuy
- 
-// ***PEGA DB***
+// *** PEGA DB ***
 Pega
 	-id: number
 	-created: Date
@@ -121,9 +119,7 @@ PegaRepository
 	+save()
 DbModule--> PegaRepository
 PegaRepository -->Pega
- 
-// *** PLAYER DB***
- 
+// *** PLAYER DB ***
 Player
 	-id: string
 	-created: Date
@@ -136,9 +132,7 @@ PlayerRepository
 	+save()
 DbModule--> PlayerRepository
 PlayerRepository -->Player
- 
 // *** API SERVICE ***
- 
 ApiService
 	-configService: EkConfigService
 	-cacheService: CacheService
@@ -146,9 +140,6 @@ ApiService
 	+fetchUserAssets()
 	+fetchUserOwnedPegas()
 	+fetchUserEarnings()
-
-// *** API SERVICE ***
-
 ApiBuilder
 	-configService: EkConfigService
 	-cacheService: CacheService
@@ -160,6 +151,3 @@ ApiBuilder
 	+get()
 	+page()
 ApiService --> ApiBuilder
- 
- 
-
