@@ -1,3 +1,4 @@
+import { ApiService } from '@/shared/api';
 import { MarketBuy, MarketBuyRepository } from '@/shared/db';
 import { CurrencyDto } from '@earnkeeper/ekp-sdk';
 import { CoingeckoService, CoinPrice } from '@earnkeeper/ekp-sdk-nestjs';
@@ -12,6 +13,7 @@ export class MarketHistoryService {
   constructor(
     private marketBuyRepository: MarketBuyRepository,
     private coingeckoService: CoingeckoService,
+    private apiService: ApiService,
   ) {}
 
   async fetchMarketHistogram(marketDocuments: MarketHistoryDocument[]) {

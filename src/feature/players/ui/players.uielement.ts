@@ -46,6 +46,7 @@ function formRow() {
         label: 'Player Address',
         name: 'address',
         type: 'string',
+        width: '400px',
       },
     ],
     buttonLabel: 'Add',
@@ -84,6 +85,20 @@ export function tableRow() {
             sortable: true,
             right: true,
             grow: 0,
+          },
+          {
+            id: 'marketValue',
+            title: 'Market Value',
+            sortable: true,
+            width:'80px',
+            format: formatCurrency('$.marketValue', '$.fiatSymbol'),
+          },
+          {
+            id: 'earnedLast24Hours',
+            title: 'Earned 24H',
+            sortable: true,
+            width:'80px',
+            format: formatCurrency('$.earnedLast24Hours', '$.fiatSymbol'),
           },
           {
             id: 'actions',

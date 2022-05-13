@@ -1,6 +1,9 @@
 import { ApiBuilder } from '@/util/sdk/api-builder';
 import { CacheService, EkConfigService } from '@earnkeeper/ekp-sdk-nestjs';
 import { Injectable } from '@nestjs/common';
+import { result } from 'lodash';
+import moment from 'moment';
+import { resourceLimits } from 'worker_threads';
 
 @Injectable()
 export class ApiService {
@@ -28,7 +31,6 @@ export class ApiService {
       .retry()
       .get(url, (response) => response.data);
   }
-
   async fetchUserEarnings(userAddress: string): Promise<PlayerEarningsDto> {
     const url = `https://api-apollo.pegaxy.io/v1/earnings/total/user/${userAddress}`;
 
@@ -39,6 +41,35 @@ export class ApiService {
       .get(url, (response) => response.data);
   }
 
+  async fetchMarketVaule(
+    breedType:string,
+    gender:string,
+    minBreedCount:number,
+    maxBreedCount: number,
+    breedable: number,
+    raceable: number,
+  ){
+    const url = `https://api-apollo.pegaxy.io/v1/pegas/prices/floor?breedType=${breedType}&gender=${gender}&minBreedCount=${minBreedCount}&maxBreedCount=${maxBreedCount}&breedable=${breedable}&raceable=${raceable}`;
+    let results = this.apiBuilder()
+    .limit()
+    .cache(300)
+    .retry()
+    .get(url, (response) => response.data);
+     return results;
+  }
+
+  async fetchUserEarningsInLast24h (userAddress: string): Promise<PlayerEarningsDto>{
+    const currentTime = moment().unix();
+    const last24Hours = currentTime-86400;
+
+    const url = `https://api-apollo.pegaxy.io/v1/earnings/historical/user/${userAddress}?since=${last24Hours}&to=${currentTime}`;
+
+    return this.apiBuilder()
+      .limit()
+      .cache(300)
+      .retry()
+      .get(url, (response) => response.data);
+  }
   async fetchUserOwnedPegas(userAddress: string): Promise<PlayerPegaDto> {
     const url = `https://api-apollo.pegaxy.io/v1/pegas/owner/user/${userAddress}`;
 
