@@ -13,19 +13,19 @@ import {
 } from '@earnkeeper/ekp-sdk-nestjs';
 import { Injectable } from '@nestjs/common';
 import _ from 'lodash';
-import { MarketBuysService } from './market-buys.service';
-import { MarketBuyDocument } from './ui/market-buys.document';
-import card from './ui/market-buys.uielement';
+import { MarketHistoryService } from './market-history.service';
+import { MarketHistoryDocument } from './ui/market-history.document';
+import card from './ui/market-history.uielement';
 
-const COLLECTION_NAME = collection(MarketBuyDocument);
+const COLLECTION_NAME = collection(MarketHistoryDocument);
 const CHART_COLLECTION_NAME = 'PegaxyMarketChart';
 const PATH = 'market';
 
 @Injectable()
-export class MarketBuysController extends AbstractController {
+export class MarketHistoryController extends AbstractController {
   constructor(
     clientService: ClientService,
-    private marketBuysService: MarketBuysService,
+    private marketBuysService: MarketHistoryService,
     private apmService: ApmService,
   ) {
     super(clientService);
@@ -34,9 +34,9 @@ export class MarketBuysController extends AbstractController {
   async onClientConnected(event: ClientConnectedEvent) {
     await this.clientService.emitMenu(event, {
       id: PATH,
-      title: 'Market Buys',
+      title: 'Market History',
       navLink: PATH,
-      icon: 'cil-cart',
+      icon: 'bar-chart-2',
     });
 
     await this.clientService.emitPage(event, {

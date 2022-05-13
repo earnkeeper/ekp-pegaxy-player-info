@@ -2,7 +2,7 @@ import { SdkModule } from '@earnkeeper/ekp-sdk-nestjs';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
-import { MarketBuysModule } from './feature/market-buys/market-buys.module';
+import { MarketHistoryModule } from './feature/market-history/market-history.module';
 import { PlayerModule } from './feature/player/player.module';
 import { PlayersModule } from './feature/players/players.module';
 import { DbModule } from './shared/db';
@@ -21,7 +21,7 @@ export const MODULE_DEF = {
       autoLoadEntities: true,
       namingStrategy: new SnakeNamingStrategy(),
     }),
-    MarketBuysModule,
+    MarketHistoryModule,
     PlayersModule,
     PlayerModule,
     DbModule,

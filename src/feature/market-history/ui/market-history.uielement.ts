@@ -1,5 +1,6 @@
 import { pageHeader } from '@/util';
 import {
+  Badge,
   Col,
   collection,
   Container,
@@ -8,9 +9,9 @@ import {
   documents,
   formatAge,
   formatCurrency,
+  formatMaskAddress,
   formatTemplate,
   Fragment,
-  Image,
   isBusy,
   jsonArray,
   Row,
@@ -18,7 +19,7 @@ import {
   Span,
   UiElement,
 } from '@earnkeeper/ekp-sdk';
-import { MarketBuyDocument } from './market-buys.document';
+import { MarketHistoryDocument } from './market-history.document';
 export default function element(): UiElement {
   return Container({
     children: [titleRow(), chartRow(), tableRow()],
@@ -104,10 +105,10 @@ export function tableRow() {
       Datatable({
         defaultSortFieldId: 'timestamp',
         defaultSortAsc: false,
-        data: documents(MarketBuyDocument),
+        data: documents(MarketHistoryDocument),
         showExport: true,
         showLastUpdated: true,
-        busyWhen: isBusy(collection(MarketBuyDocument)),
+        busyWhen: isBusy(collection(MarketHistoryDocument)),
         columns: [
           {
             id: 'timestamp',
@@ -116,46 +117,46 @@ export function tableRow() {
             format: formatAge('$.timestamp'),
           },
           {
+            id: 'pegaId',
+            title: 'Id',
+            format: formatTemplate('#{{ id }}', { id: '$.pegaId' }),
+            width: '130px',
+            sortable: true,
+            searchable: true,
+          },
+          {
             id: 'pegaName',
+            title: 'Name',
             sortable: true,
             width: '300px',
-            cell: Row({
-              children: [
-                Col({
-                  className: 'col-auto pr-0',
-                  children: [
-                    Image({
-                      height: '32px',
-                      src: formatTemplate(
-                        'https://cdn.pegaxy.io/data/pega/{{ pegaAvatarId }}',
-                        { pegaAvatarId: '$.pegaAvatarId' },
-                      ),
-                    }),
-                  ],
-                }),
-                Col({
-                  className: 'col-auto my-auto font-medium-1',
-                  children: [Span({ content: '$.pegaName' })],
-                }),
-              ],
-            }),
           },
           {
             id: 'buyer',
             sortable: true,
-          },
-          {
-            id: 'pegaId',
-            sortable: true,
-            width: '100px',
-            right: true,
+            format: formatMaskAddress('$.buyer'),
+            width: '160px',
           },
           {
             id: 'priceFiat',
+            title: 'Cost',
             sortable: true,
-            width: '140px',
-            right: true,
             format: formatCurrency('$.priceFiat', '$.fiatSymbol'),
+          },
+          {
+            id: 'bloodline',
+            sortable: true,
+            searchable: true,
+          },
+          {
+            id: 'breedType',
+            title: 'breed',
+            sortable: true,
+            searchable: true,
+          },
+          {
+            id: 'gender',
+            sortable: true,
+            searchable: true,
           },
         ],
       }),

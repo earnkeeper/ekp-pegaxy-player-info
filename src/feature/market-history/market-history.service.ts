@@ -5,16 +5,16 @@ import { Injectable } from '@nestjs/common';
 import { ethers } from 'ethers';
 import _ from 'lodash';
 import moment from 'moment';
-import { MarketBuyDocument } from './ui/market-buys.document';
+import { MarketHistoryDocument } from './ui/market-history.document';
 
 @Injectable()
-export class MarketBuysService {
+export class MarketHistoryService {
   constructor(
     private marketBuyRepository: MarketBuyRepository,
     private coingeckoService: CoingeckoService,
   ) {}
 
-  async fetchMarketHistogram(marketDocuments: MarketBuyDocument[]) {
+  async fetchMarketHistogram(marketDocuments: MarketHistoryDocument[]) {
     const documents = _.chain(marketDocuments)
       .filter((it) => it.priceFiat < 10000)
       .groupBy((it) => moment.unix(it.timestamp).startOf('hour').unix())
@@ -32,7 +32,7 @@ export class MarketBuysService {
 
   async fetchMarketDocuments(
     currency: CurrencyDto,
-  ): Promise<MarketBuyDocument[]> {
+  ): Promise<MarketHistoryDocument[]> {
     const results = await this.marketBuyRepository.findAll();
 
     const coinIds = _.chain(results)
@@ -52,7 +52,7 @@ export class MarketBuysService {
     results: MarketBuy[],
     currency: CurrencyDto,
     prices: CoinPrice[],
-  ): MarketBuyDocument[] {
+  ): MarketHistoryDocument[] {
     const now = moment().unix();
 
     const decimals = 6;
@@ -69,16 +69,21 @@ export class MarketBuysService {
 
         const priceFiat = priceInToken * rate;
 
-        const document: MarketBuyDocument = {
-          buyer: result.buyer_address,
-          fiatSymbol: currency.symbol,
+        const document: MarketHistoryDocument = {
           id: result.id,
+          updated: result.updated.getTime() / 1000,
+          breedType: result.pega?.breed_type,
+          buyer: result.buyer_address,
+          class: result.pega?.class,
+          bloodline: result.pega?.bloodline,
+          fiatSymbol: currency.symbol,
+          gender: result.pega?.gender,
+          pegaAvatarId1: result.pega?.avatar_id_1,
+          pegaAvatarId2: result.pega?.avatar_id_2,
           pegaId: result.pega_token_id,
           pegaName: result.pega?.name,
-          pegaAvatarId: result.pega?.avatar_id_1,
           priceFiat,
           timestamp: result.created.getTime() / 1000,
-          updated: now,
         };
 
         return document;
