@@ -1,21 +1,26 @@
-// *** PLAYER CONTROLLER ***
+// *** PLAYER ***
+
 PlayerController
 	-clientService: ClientService
 	-playersService: PlayersService
 	+onClientStateChanged()
 	+onClientConnected()
-PlayerService
-	-apiService: ApiService
-	-coingeckoService: CoingeckoService
-	+fetchDocuments()
+
 PegaDocument
 	-address: string
 	-earnedVisFiat: number
 	-earnedVis: number
 	-fiatSymbol: string
 	-pegasOwned: number
+
 PlayerUI
 	+element()
+
+PlayerService
+	-apiService: ApiService
+	-coingeckoService: CoingeckoService
+	+fetchDocuments()
+
 PlayerController --> PlayerService
 PlayerController --> PlayerUI
 PlayerService --> PegaDocument
@@ -23,24 +28,28 @@ PlayerService --> ApiService
 PlayerController --> PegaDocument
 PlayerUI --> PegaDocument
 
-// *** PLAYERS CONTROLLER ***
+// *** PLAYERS ***
 PlayersController
 	-clientService: ClientService
 	-playersService: PlayersService
 	+onClientStateChanged()
 	+onClientConnected()
+
 PlayersService
 	-apiService: ApiService
 	-coingeckoService: CoingeckoService
 	+fetchDocuments()
+
 PlayersDocument
 	-address: string
 	-earnedVisFiat: number
 	-earnedVis: number
 	-fiatSymbol: string
 	-pegasOwned: number
+
 PlayersUI
 	+element()
+
 PlayersController --> PlayersService
 PlayersController --> PlayersUI
 PlayersController --> PlayersDocument
@@ -55,12 +64,14 @@ MarketBuysController
 	-apmService: ApmService
 	+onClientStateChanged()
 	+onClientConnected()
+
 MarketBuysService
 	-marketBuyRepository: MarketBuyRepository
 	-coingeckoService: CoingeckoService
 	+fetchMarketHistogram()
 	+fetchMarketDocuments()
 	+mapToDocuments()
+
 MarketBuysDocument
 	-buyer: string
 	-fiatSymbol: string
@@ -69,8 +80,10 @@ MarketBuysDocument
 	-priceFiat: number
 	-timestamp: number
 	-pegaAvatarId: string
+
 MarketBuysUI
 	-element()
+
 MarketBuysController --> MarketBuysService
 MarketBuysController --> MarketBuysUI
 MarketBuysController --> MarketBuysDocument
@@ -79,6 +92,7 @@ MarketBuysUI --> MarketBuysDocument
 MarketBuysService --> MarketBuyRepository 
 
 // *** MARKET BUY DB ***
+
 MarketBuy
 	-id: string
 	-created: Date
@@ -88,12 +102,16 @@ MarketBuy
 	-price_coin_id: string
 	-pega_token_id: number
 	-pega: Pega
+
 MarketBuyRepository
 	-repo: Repository
 	+findAll()
 	+save()
+
 MarketBuyRepository -->MarketBuy
+
 // *** PEGA DB ***
+
 Pega
 	-id: number
 	-created: Date
@@ -110,11 +128,15 @@ Pega
 	-owner_player_id: string
 	-avatar_id_1: string
 	-avatar_id_2: string
+
 PegaRepository
 	+findLatest()
 	+save()
+
 PegaRepository -->Pega
+
 // *** PLAYER DB ***
+
 Player
 	-id: string
 	-created: Date
@@ -122,11 +144,15 @@ Player
 	-address: string
 	-earned_to_date: string
 	-earned_to_date_coin_id: string
+
 PlayerRepository
 	+findLatest()
 	+save()
+
 PlayerRepository -->Player
+
 // *** API SERVICE ***
+
 ApiService
 	-configService: EkConfigService
 	-cacheService: CacheService
@@ -134,6 +160,7 @@ ApiService
 	+fetchUserAssets()
 	+fetchUserOwnedPegas()
 	+fetchUserEarnings()
+
 ApiBuilder
 	-configService: EkConfigService
 	-cacheService: CacheService
@@ -144,4 +171,5 @@ ApiBuilder
 	+cache()
 	+get()
 	+page()
+
 ApiService --> ApiBuilder

@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { MarketHistoryModule } from './feature/market-history/market-history.module';
+import { MarketNotificationsModule } from './feature/market-notifications/market-notifications.module';
 import { PlayerModule } from './feature/player/player.module';
 import { PlayersModule } from './feature/players/players.module';
 import { DbModule } from './shared/db';
@@ -22,6 +23,7 @@ export const MODULE_DEF = {
       namingStrategy: new SnakeNamingStrategy(),
     }),
     MarketHistoryModule,
+    MarketNotificationsModule,
     PlayersModule,
     PlayerModule,
     DbModule,

@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MarketBuy, MarketBuyRepository } from './market';
-import { MarketAlertConfig } from './market-alert-config';
+import {
+  MarketAlertConfig,
+  MarketAlertConfigRepository,
+} from './market-alert-config';
 import { PegaRepository } from './pega/pega.repository';
 import { Pega } from './pega/pega.schema';
 import { Player, PlayerRepository } from './player';
@@ -13,13 +16,13 @@ import { Player, PlayerRepository } from './player';
     PlayerRepository,
     PegaRepository,
     MarketBuyRepository,
-    MarketAlertConfig,
+    MarketAlertConfigRepository,
   ],
   exports: [
     PlayerRepository,
     PegaRepository,
     MarketBuyRepository,
-    MarketAlertConfig,
+    MarketAlertConfigRepository,
   ],
 })
 export class DbModule {}

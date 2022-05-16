@@ -9,7 +9,9 @@ export class MarketAlertConfig {
   @Column({ type: 'timestamptz' }) readonly updated: Date;
 
   @Column() readonly bloodline?: string;
-  @Column() readonly breed?: string;
+  @Column() readonly breed_type?: number;
+  @Column() readonly breed_min?: number;
+  @Column() readonly breed_max?: number;
   @Column() readonly gender?: string;
   @Column() readonly price_min?: number;
   @Column() readonly price_max?: number;

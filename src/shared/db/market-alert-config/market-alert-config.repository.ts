@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { MarketAlertConfig } from './market-alert-config.schema';
 
 @Injectable()
-export class MarketAlertRepository {
+export class MarketAlertConfigRepository {
   constructor(
     @InjectRepository(MarketAlertConfig)
     public pegaRepository: Repository<MarketAlertConfig>,

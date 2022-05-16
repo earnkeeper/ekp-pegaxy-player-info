@@ -33,7 +33,7 @@ export class PlayersService {
         const earnedVis =
           playerEarnings.ownRacedVis +
           playerEarnings.renteeVisShare +
-          playerEarnings.fixedRentalPgx;
+          playerEarnings.fixedRenterVis;
 
         const earnedVisFiat = earnedVis * visRate;
 
