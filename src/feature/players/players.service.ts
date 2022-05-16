@@ -1,4 +1,5 @@
 import { ApiService } from '@/shared/api';
+import { DbModule, MarketBuyRepository } from '@/shared/db';
 import { CurrencyDto } from '@earnkeeper/ekp-sdk';
 import { CoingeckoService } from '@earnkeeper/ekp-sdk-nestjs';
 import { Injectable } from '@nestjs/common';
@@ -11,6 +12,7 @@ export class PlayersService {
   constructor(
     private apiService: ApiService,
     private coingeckoService: CoingeckoService,
+    private marketBuyRepository: MarketBuyRepository,
   ) {}
 
   async fetchDocuments(
@@ -22,20 +24,22 @@ export class PlayersService {
       currency.id,
     );
     const visRate = coinRates.find((it) => it.coinId === 'vigorus')?.price;
-    let earned = 0;
-
-    //const result2 = await this.apiService.fetchUserEarningsInLast24h(playersForm.address);
-    //console.log(playersForm.address)
-
+    let cost = 0;
     return _.chain(playersForm)
       .map(async (record: any) => {
-        const [playerAssets, playerEarnings, playerEarningsIn24, playerPegas] =
-          await Promise.all([
-            this.apiService.fetchUserAssets(record.address),
-            this.apiService.fetchUserEarnings(record.address),
-            this.apiService.fetchUserEarningsInLast24h(record.address),
-            this.apiService.fetchUserOwnedPegas(record.address),
-          ]);
+        const [
+          playerAssets,
+          playerEarnings,
+          playerEarningsIn24,
+          playerPegas,
+          pegaCost,
+        ] = await Promise.all([
+          this.apiService.fetchUserAssets(record.address),
+          this.apiService.fetchUserEarnings(record.address),
+          this.apiService.fetchUserEarningsInLast24h(record.address),
+          this.apiService.fetchUserOwnedPegas(record.address),
+          this.marketBuyRepository.calculateCost(record.address),
+        ]);
 
         const earnedVis =
           playerEarnings.ownRacedVis +
@@ -43,7 +47,16 @@ export class PlayersService {
           playerEarnings.fixedRentalPgx;
 
         let earnedLast24Hours = 0;
-
+        // cost calculation
+        if (pegaCost.length > 0) {
+          for (let key of Object.keys(pegaCost)) {
+            let result = pegaCost[key];
+            cost = cost + Number(result.price);
+          }
+        } else {
+          cost = 0;
+        }
+        //player earnings in 24 Hours
         for (let key of Object.keys(playerEarningsIn24)) {
           let result = playerEarningsIn24[key];
           earnedLast24Hours =
@@ -83,16 +96,18 @@ export class PlayersService {
             }
           }
         }
-        console.log('Total Price ' + marketValue);
+
         const earnedVisFiat = earnedVis * visRate;
         earnedLast24Hours = earnedLast24Hours * visRate;
         marketValue = marketValue * visRate;
+        cost = cost * visRate;
 
         return {
           id: record.address,
           updated: moment().unix(),
           address: record.address,
           earnedLast24Hours,
+          cost,
           pegasOwned: playerAssets.pega,
           earnedVis,
           marketValue,

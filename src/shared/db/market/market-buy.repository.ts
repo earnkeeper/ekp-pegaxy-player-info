@@ -2,12 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { MarketBuy } from './market-buy.schema';
+import { EntityManager } from 'typeorm';
 
 @Injectable()
 export class MarketBuyRepository {
   constructor(
     @InjectRepository(MarketBuy)
     public repo: Repository<MarketBuy>,
+    private manager: EntityManager,
   ) {}
 
   async findAll(limit?: number): Promise<MarketBuy[]> {
@@ -17,6 +19,31 @@ export class MarketBuyRepository {
       .orderBy('mb.created', 'DESC')
       .take(limit)
       .getMany();
+  }
+
+  async findCost(buyer: string) {
+    return this.repo
+      .createQueryBuilder()
+      .select('mb')
+      .addSelect('SUM(mb.price)', 'sum')
+      .distinctOn(['mb.id'])
+      .groupBy('mb.id')
+      .orderBy('mb.id')
+      .addOrderBy('mb.created', 'DESC')
+      .from(MarketBuy, 'mb')
+      .where('mb.buyer_address = :buyer', { buyer: buyer })
+      .getSql();
+  }
+
+  async calculateCost(buyer) {
+    const rawData = await this.manager
+      .query(`SELECT DISTINCT
+      id,created,price, price_coin_id
+      FROM public.market_buys 
+      WHERE buyer_address = '${buyer}' 
+      GROUP BY id 
+      ORDER BY id ASC, created DESC `);
+    return rawData;
   }
 
   async save(models: MarketBuy[]): Promise<void> {

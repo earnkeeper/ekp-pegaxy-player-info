@@ -50,7 +50,7 @@ export class ApiService {
     raceable: number,
   ) {
     const url = `https://api-apollo.pegaxy.io/v1/pegas/prices/floor?breedType=${breedType}&gender=${gender}&minBreedCount=${minBreedCount}&maxBreedCount=${maxBreedCount}&breedable=${breedable}&raceable=${raceable}`;
-    let results = this.apiBuilder()
+    const results = this.apiBuilder()
       .limit()
       .cache(300)
       .retry()

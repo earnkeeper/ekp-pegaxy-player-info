@@ -47,22 +47,41 @@ function titleRow() {
 function statsRow() {
   return Row({
     className: 'mt-2',
-    context: `${path(PlayerDocument)}[0]`,
     children: [
       Col({
         className: 'col-auto',
-        children: [statsCard('Total Cost', formatCurrency(sum('$.cost'), '$.fiatSymbol'))],
-      }),
-      Col({
-        className: 'col-auto',
         children: [
-          statsCard('Total Market Value', formatCurrency(sum('$.marketValue'), '$.fiatSymbol')),
+          statsCard(
+            'Total Cost',
+            formatCurrency(
+              sum(`${path(PlayerDocument)}.*.cost`),
+              `${path(PlayerDocument)}.0.fiatSymbol`,
+            ),
+          ),
         ],
       }),
       Col({
         className: 'col-auto',
         children: [
-          statsCard('Total Earned in 24H', formatCurrency(sum('$.earnedLast24Hours'), '$.fiatSymbol')),
+          statsCard(
+            'Total Market Value ',
+            formatCurrency(
+              sum(`${path(PlayerDocument)}.*.marketValue`),
+              `${path(PlayerDocument)}.0.fiatSymbol`,
+            ),
+          ),
+        ],
+      }),
+      Col({
+        className: 'col-auto',
+        children: [
+          statsCard(
+            'Total Earned in Last 24 Hours',
+            formatCurrency(
+              sum(`${path(PlayerDocument)}.*.earnedLast24Hours`),
+              `${path(PlayerDocument)}.0.fiatSymbol`,
+            ),
+          ),
         ],
       }),
     ],
@@ -116,28 +135,28 @@ export function tableRow() {
             title: 'Pegas',
             sortable: true,
             right: true,
-            grow: 0,
+            width: '80px',
           },
           {
             id: 'cost',
             title: 'Cost',
             sortable: true,
-            width:'80px',
+            width: '150px',
             format: formatCurrency('$.cost', '$.fiatSymbol'),
           },
-        
+
           {
             id: 'marketValue',
             title: 'Market Value',
             sortable: true,
-            width: '80px',
+            width: '100px',
             format: formatCurrency('$.marketValue', '$.fiatSymbol'),
           },
           {
             id: 'earnedLast24Hours',
             title: 'Earned 24H',
             sortable: true,
-            width: '80px',
+            width: '100px',
             format: formatCurrency('$.earnedLast24Hours', '$.fiatSymbol'),
           },
           {
@@ -158,3 +177,4 @@ export function tableRow() {
   });
 }
 
+function trial() {}
