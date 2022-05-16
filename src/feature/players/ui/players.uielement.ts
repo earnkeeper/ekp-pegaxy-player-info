@@ -1,23 +1,30 @@
 import { pageHeader } from '@/util';
+import { statsCard } from '@/util/stats-card';
 import { formHelper } from '@/util/ui/form-helper';
 import {
   Button,
+  Card,
   Col,
   collection,
+  commify,
   Container,
   Datatable,
   documents,
   formatCurrency,
+  formatTimeToNow,
   Fragment,
   isBusy,
+  path,
   removeFormRecord,
   Row,
+  Span,
+  sum,
   UiElement,
 } from '@earnkeeper/ekp-sdk';
 import { PlayerDocument } from './player.document';
 export default function element(): UiElement {
   return Container({
-    children: [titleRow(), formRow(), tableRow()],
+    children: [titleRow(), statsRow(), formRow(), tableRow()],
   });
 }
 
@@ -31,6 +38,31 @@ function titleRow() {
             className: 'col-auto',
             children: [pageHeader('user', 'Player Stats')],
           }),
+        ],
+      }),
+    ],
+  });
+}
+
+function statsRow() {
+  return Row({
+    className: 'mt-2',
+    context: `${path(PlayerDocument)}[0]`,
+    children: [
+      Col({
+        className: 'col-auto',
+        children: [statsCard('Total Cost', formatCurrency(sum('$.cost'), '$.fiatSymbol'))],
+      }),
+      Col({
+        className: 'col-auto',
+        children: [
+          statsCard('Total Market Value', formatCurrency(sum('$.marketValue'), '$.fiatSymbol')),
+        ],
+      }),
+      Col({
+        className: 'col-auto',
+        children: [
+          statsCard('Total Earned in 24H', formatCurrency(sum('$.earnedLast24Hours'), '$.fiatSymbol')),
         ],
       }),
     ],
@@ -87,6 +119,14 @@ export function tableRow() {
             grow: 0,
           },
           {
+            id: 'cost',
+            title: 'Cost',
+            sortable: true,
+            width:'80px',
+            format: formatCurrency('$.cost', '$.fiatSymbol'),
+          },
+        
+          {
             id: 'marketValue',
             title: 'Market Value',
             sortable: true,
@@ -117,3 +157,4 @@ export function tableRow() {
     ],
   });
 }
+
