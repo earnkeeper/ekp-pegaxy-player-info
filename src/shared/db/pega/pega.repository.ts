@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Pega} from './pega.schema';
+import { Pega } from './pega.schema';
 
 @Injectable()
 export class PegaRepository {
@@ -11,7 +11,7 @@ export class PegaRepository {
   ) {}
 
   async findLatest(): Promise<Pega> {
-    const results = await this.pegaRepository.find({   });
+    const results = await this.pegaRepository.find({});
 
     if (!results?.length) {
       return undefined;
