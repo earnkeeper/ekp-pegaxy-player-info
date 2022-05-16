@@ -11,7 +11,7 @@ export class PlayerRepository {
   ) {}
 
   async findLatest(): Promise<Player> {
-    const results = await this.playerRepository.find({ });
+    const results = await this.playerRepository.find({});
 
     if (!results?.length) {
       return undefined;

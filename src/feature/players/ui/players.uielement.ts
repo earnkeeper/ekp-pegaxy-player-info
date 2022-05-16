@@ -130,14 +130,14 @@ export function tableRow() {
             id: 'marketValue',
             title: 'Market Value',
             sortable: true,
-            width:'80px',
+            width: '80px',
             format: formatCurrency('$.marketValue', '$.fiatSymbol'),
           },
           {
             id: 'earnedLast24Hours',
             title: 'Earned 24H',
             sortable: true,
-            width:'80px',
+            width: '80px',
             format: formatCurrency('$.earnedLast24Hours', '$.fiatSymbol'),
           },
           {

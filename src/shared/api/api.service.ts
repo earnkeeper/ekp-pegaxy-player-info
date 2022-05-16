@@ -42,25 +42,27 @@ export class ApiService {
   }
 
   async fetchMarketVaule(
-    breedType:string,
-    gender:string,
-    minBreedCount:number,
+    breedType: string,
+    gender: string,
+    minBreedCount: number,
     maxBreedCount: number,
     breedable: number,
     raceable: number,
-  ){
+  ) {
     const url = `https://api-apollo.pegaxy.io/v1/pegas/prices/floor?breedType=${breedType}&gender=${gender}&minBreedCount=${minBreedCount}&maxBreedCount=${maxBreedCount}&breedable=${breedable}&raceable=${raceable}`;
     let results = this.apiBuilder()
-    .limit()
-    .cache(300)
-    .retry()
-    .get(url, (response) => response.data);
-     return results;
+      .limit()
+      .cache(300)
+      .retry()
+      .get(url, (response) => response.data);
+    return results;
   }
 
-  async fetchUserEarningsInLast24h (userAddress: string): Promise<PlayerEarningsDto>{
+  async fetchUserEarningsInLast24h(
+    userAddress: string,
+  ): Promise<PlayerEarningsDto> {
     const currentTime = moment().unix();
-    const last24Hours = currentTime-86400;
+    const last24Hours = currentTime - 86400;
 
     const url = `https://api-apollo.pegaxy.io/v1/earnings/historical/user/${userAddress}?since=${last24Hours}&to=${currentTime}`;
 
