@@ -5,6 +5,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { MarketHistoryModule } from './feature/market-history/market-history.module';
 import { PlayerModule } from './feature/player/player.module';
 import { PlayersModule } from './feature/players/players.module';
+import { RaceModule } from './feature/race/race.module';
 import { DbModule } from './shared/db';
 
 export const MODULE_DEF = {
@@ -25,6 +26,7 @@ export const MODULE_DEF = {
     PlayersModule,
     PlayerModule,
     DbModule,
+    RaceModule,
     SdkModule,
   ],
 };

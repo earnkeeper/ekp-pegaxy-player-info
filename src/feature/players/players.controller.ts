@@ -58,12 +58,13 @@ export class PlayersController extends AbstractController {
         currency,
         playersForm,
       );
-
       await this.clientService.emitDocuments(
         event,
         COLLECTION_NAME,
         _.slice(documents, 0, 100),
       );
+      
+    
     } catch (error) {
       logger.error('Error occurred while handling event', error);
       console.error(error);

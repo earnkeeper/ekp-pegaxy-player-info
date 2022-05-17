@@ -38,7 +38,7 @@ export class PlayersService {
           this.apiService.fetchUserEarnings(record.address),
           this.apiService.fetchUserEarningsInLast24h(record.address),
           this.apiService.fetchUserOwnedPegas(record.address),
-          this.marketBuyRepository.calculateCost(record.address),
+          this.marketBuyRepository.fetchPegaCost(record.address),
         ]);
 
         const earnedVis =
@@ -97,6 +97,8 @@ export class PlayersService {
           }
         }
 
+        console.log('Total Market Value ' + marketValue);
+
         const earnedVisFiat = earnedVis * visRate;
         earnedLast24Hours = earnedLast24Hours * visRate;
         marketValue = marketValue * visRate;
@@ -117,8 +119,5 @@ export class PlayersService {
       })
       .thru((promises) => Promise.all(promises))
       .value();
-  }
-  async marketValue() {
-    //console.log(results.price);
   }
 }

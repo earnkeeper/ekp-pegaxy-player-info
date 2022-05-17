@@ -7,15 +7,6 @@ export function statsCard(title: string, body: string | Rpc) {
         className: 'px-2 py-1',
         children: [
           Col({
-            className: 'col-auto my-auto',
-            children: [
-              Avatar({
-                icon: 'award',
-                size: 'sm',
-              }),
-            ],
-          }),
-          Col({
             className: 'col-auto pr-2',
             children: [
               Span({ className: 'd-block font-small-3', content: title }),

@@ -25,22 +25,45 @@ export class ApiService {
   async fetchUserAssets(userAddress: string): Promise<PlayerAssetsDto> {
     const url = `https://api-apollo.pegaxy.io/v1/assets/count/user/${userAddress}`;
 
-    return this.apiBuilder()
+    return await this.apiBuilder()
       .limit()
       .cache(300)
       .retry()
       .get(url, (response) => response.data);
   }
+
+  async fetchPegaEarnings(pegaId: number): Promise<PegaEarningsDto> {
+    const startDate = 1609502400;
+    const endDate= moment().unix();
+
+    const url = `https://api-apollo.pegaxy.io/v1/pegas/${pegaId}/earnings?since=${startDate}&to=${endDate}`;
+
+    return await this.apiBuilder()
+      .limit()
+      .cache(300)
+      .retry()
+      .get(url, (response) => response.data);
+  }
+
   async fetchUserEarnings(userAddress: string): Promise<PlayerEarningsDto> {
     const url = `https://api-apollo.pegaxy.io/v1/earnings/total/user/${userAddress}`;
 
-    return this.apiBuilder()
+    return await this.apiBuilder()
       .limit()
       .cache(300)
       .retry()
       .get(url, (response) => response.data);
   }
 
+  async fetchPegaRaceHistory(pegaId: number): Promise<PegaRaceHistoryDto[]> {
+    const url = `https://api-apollo.pegaxy.io/v1/game-api/race/history/pega/${pegaId}`;
+
+    return await this.apiBuilder()
+      .limit()
+      .cache(300)
+      .retry()
+      .get(url, (response) => response.data);
+  }
   async fetchMarketVaule(
     breedType: string,
     gender: string,
@@ -50,7 +73,7 @@ export class ApiService {
     raceable: number,
   ) {
     const url = `https://api-apollo.pegaxy.io/v1/pegas/prices/floor?breedType=${breedType}&gender=${gender}&minBreedCount=${minBreedCount}&maxBreedCount=${maxBreedCount}&breedable=${breedable}&raceable=${raceable}`;
-    const results = this.apiBuilder()
+    const results = await this.apiBuilder()
       .limit()
       .cache(300)
       .retry()
@@ -66,16 +89,16 @@ export class ApiService {
 
     const url = `https://api-apollo.pegaxy.io/v1/earnings/historical/user/${userAddress}?since=${last24Hours}&to=${currentTime}`;
 
-    return this.apiBuilder()
+    return await this.apiBuilder()
       .limit()
       .cache(300)
       .retry()
       .get(url, (response) => response.data);
   }
-  async fetchUserOwnedPegas(userAddress: string): Promise<PlayerPegaDto> {
+  async fetchUserOwnedPegas(userAddress: string): Promise<any> {
     const url = `https://api-apollo.pegaxy.io/v1/pegas/owner/user/${userAddress}`;
 
-    return this.apiBuilder()
+    return await this.apiBuilder()
       .limit()
       .cache(300)
       .retry()
@@ -142,4 +165,17 @@ export interface PlayerPegaDto {
   readonly winRate: number;
   readonly lastBreedTime: number;
   readonly rentTimeEnd: number;
+}
+
+export interface PegaEarningsDto{
+  readonly ownerPegaRewards: number;
+  readonly renterPegaRewards: number;
+  readonly epoch: number;
+}
+export interface PegaRaceHistoryDto{
+  readonly id: number;
+  readonly position: number;
+  readonly reward: number;
+  readonly raceId: number;
+  readonly updatedAt: Date;
 }

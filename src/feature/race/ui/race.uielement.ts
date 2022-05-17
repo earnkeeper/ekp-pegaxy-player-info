@@ -1,5 +1,4 @@
 import { pageHeader } from '@/util';
-import { statsCard } from '@/util/stats-card';
 import { formHelper } from '@/util/ui/form-helper';
 import {
   Button,
@@ -9,20 +8,16 @@ import {
   Datatable,
   documents,
   formatCurrency,
-  formatPercent,
-  formatTemplate,
   Fragment,
   isBusy,
-  path,
   Row,
   Span,
-  sum,
   UiElement,
 } from '@earnkeeper/ekp-sdk';
-import { PegaDocument } from './pega.document';
+import { RaceDocument } from './race.document';
 export default function element(): UiElement {
   return Container({
-    children: [titleRow(),statsRow(), formRow(), tableRow()],
+    children: [titleRow(), formRow(), tableRow()],
   });
 }
 
@@ -47,54 +42,11 @@ function titleRow() {
     ],
   });
 }
-function statsRow() {
-  return Row({
-    className: 'mt-2',
-    children: [
-      Col({
-        className: 'col-auto',
-        children: [
-          statsCard(
-            'Total Cost',
-            formatCurrency(
-              sum(`${path(PegaDocument)}.*.cost`),
-              `${path(PegaDocument)}.0.fiatSymbol`,
-            ),
-          ),
-        ],
-      }),
-      Col({
-        className: 'col-auto',
-        children: [
-          statsCard(
-            'Total Market Value ',
-            formatCurrency(
-              sum(`${path(PegaDocument)}.*.marketValue`),
-              `${path(PegaDocument)}.0.fiatSymbol`,
-            ),
-          ),
-        ],
-      }),
-      Col({
-        className: 'col-auto',
-        children: [
-          statsCard(
-            'Total Earned',
-            formatCurrency(
-              sum(`${path(PegaDocument)}.*.earned`),
-              `${path(PegaDocument)}.0.fiatSymbol`,
-            ),
-          ),
-        ],
-      }),
-    ],
-  });
-}
 
 function formRow() {
   return formHelper({
     name: 'players',
-    busyWhen: isBusy(collection(PegaDocument)),
+    busyWhen: isBusy(collection(RaceDocument)),
     fields: [
       {
         label: 'Player Address',
@@ -115,57 +67,59 @@ export function tableRow() {
       Datatable({
         defaultSortFieldId: 'timestamp',
         defaultSortAsc: false,
-        data: documents(PegaDocument),
+        data: documents(RaceDocument),
         showExport: true,
         showLastUpdated: true,
-        busyWhen: isBusy(collection(PegaDocument)),
+        busyWhen: isBusy(collection(RaceDocument)),
         columns: [
           {
-            id: 'pegaId',
-            title: 'Id',
+            id: 'address',
             sortable: true,
             searchable: true,
-            format: formatTemplate('#{{ id }}', { id: '$.pegaId' }),
-            width:'100px',
+            width:'150px',
           },
           {
             id: 'name',
             sortable: true,
             searchable: true,
-            width:'200px',
+            width:'150px',
           },
           {
             id: 'cost',
             title: 'Cost',
             sortable: true,
+            grow: 0,
             format: formatCurrency('$.cost', '$.fiatSymbol'),
-            width:'120px',
+            width:'100px',
           },
           {
             id: 'marketValue',
             title: 'Market Value',
             sortable: true,
+            grow: 0,
             format: formatCurrency('$.marketValue', '$.fiatSymbol'),
-            width:'120px',
+            width:'100px',
           },
           {
             id: 'placeRate',
             title: 'Place Rate',
             sortable: true,
-            format: formatPercent('$.placeRate'),
-            width:'120px',
+            right: true,
+            width:'150px',
           },
           {
             id: 'totalRaces',
             title: 'Total Races',
             sortable: true,
-            width:'120px',
+            right: true,
+            width:'100px',
           },
           {
             id: 'earned',
             title: 'Total Earned',
             sortable: true,
-            width:'120px',
+            right: true,
+            width:'100px',
             format: formatCurrency('$.earned', '$.fiatSymbol'),
           },
         ],

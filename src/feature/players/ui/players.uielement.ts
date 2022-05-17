@@ -11,9 +11,11 @@ import {
   Datatable,
   documents,
   formatCurrency,
+  formatTemplate,
   formatTimeToNow,
   Fragment,
   isBusy,
+  navigate,
   path,
   removeFormRecord,
   Row,
@@ -97,7 +99,6 @@ function formRow() {
         label: 'Player Address',
         name: 'address',
         type: 'string',
-        width: '400px',
       },
     ],
     buttonLabel: 'Add',
@@ -117,6 +118,13 @@ export function tableRow() {
         showExport: true,
         showLastUpdated: true,
         busyWhen: isBusy(collection(PlayerDocument)),
+        onRowClicked: navigate(
+          formatTemplate(`player/{{ refId }}`, {
+            refId: '$.address',
+          }),
+          true,
+          false,
+        ),
         columns: [
           {
             id: 'address',
@@ -177,4 +185,3 @@ export function tableRow() {
   });
 }
 
-function trial() {}

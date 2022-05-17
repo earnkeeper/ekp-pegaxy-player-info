@@ -21,21 +21,7 @@ export class MarketBuyRepository {
       .getMany();
   }
 
-  async findCost(buyer: string) {
-    return this.repo
-      .createQueryBuilder()
-      .select('mb')
-      .addSelect('SUM(mb.price)', 'sum')
-      .distinctOn(['mb.id'])
-      .groupBy('mb.id')
-      .orderBy('mb.id')
-      .addOrderBy('mb.created', 'DESC')
-      .from(MarketBuy, 'mb')
-      .where('mb.buyer_address = :buyer', { buyer: buyer })
-      .getSql();
-  }
-
-  async calculateCost(buyer) {
+  async fetchPegaCost(buyer) {
     const rawData = await this.manager
       .query(`SELECT DISTINCT
       id,created,price, price_coin_id

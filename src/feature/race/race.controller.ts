@@ -11,18 +11,18 @@ import {
   logger,
 } from '@earnkeeper/ekp-sdk-nestjs';
 import { Injectable } from '@nestjs/common';
-import { PlayerService } from './player.service';
-import { PegaDocument } from './ui/pega.document';
-import page from './ui/player.uielement';
+import { RaceService } from './race.service';
+import { RaceDocument } from './ui/race.document';
+import page from './ui/race.uielement';
 
-const COLLECTION_NAME = collection(PegaDocument);
-const PATH = 'player';
+const COLLECTION_NAME = collection(RaceDocument);
+const PATH = 'race';
 
 @Injectable()
-export class PlayerController extends AbstractController {
+export class RaceController extends AbstractController {
   constructor(
     clientService: ClientService,
-    private playerService: PlayerService,
+    private raceService: RaceService,
   ) {
     super(clientService);
   }
@@ -46,7 +46,7 @@ export class PlayerController extends AbstractController {
 
       const playerAddress = event.state.client.path.replace(`${PATH}/`, '');
 
-      const documents = await this.playerService.fetchDocuments(currency, playerAddress);
+      const documents = await this.raceService.fetchDocuments(currency, playerAddress);
 
       await this.clientService.emitDocuments(event, COLLECTION_NAME, documents);
     } catch (error) {
