@@ -4,7 +4,7 @@
   "name": "Player Info",
   "github": "https://github.com/earnkeeper/ekp-pegaxy-player-info",
   "image": "/static/market.png",
-  "mainPage": "player",
+  "mainPage": "players",
   "description": "",
   "features": ["Player Collection", "NFT Browser"]
 }

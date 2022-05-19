@@ -46,7 +46,10 @@ export class PlayerController extends AbstractController {
 
       const playerAddress = event.state.client.path.replace(`${PATH}/`, '');
 
-      const documents = await this.playerService.fetchDocuments(currency, playerAddress);
+      const documents = await this.playerService.fetchDocuments(
+        currency,
+        playerAddress,
+      );
 
       await this.clientService.emitDocuments(event, COLLECTION_NAME, documents);
     } catch (error) {

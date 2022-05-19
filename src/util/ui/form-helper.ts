@@ -39,6 +39,8 @@ export function formHelper(props: FormHelperProps) {
         return Input({
           label: field.label,
           name: field.name,
+          // @ts-ignore
+          style: { minWidth: '300px' },
         });
       }
     })

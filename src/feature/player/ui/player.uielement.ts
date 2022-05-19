@@ -1,8 +1,6 @@
 import { pageHeader } from '@/util';
 import { statsCard } from '@/util/stats-card';
-import { formHelper } from '@/util/ui/form-helper';
 import {
-  Button,
   Col,
   collection,
   Container,
@@ -22,7 +20,7 @@ import {
 import { PegaDocument } from './pega.document';
 export default function element(): UiElement {
   return Container({
-    children: [titleRow(),statsRow(), formRow(), tableRow()],
+    children: [titleRow(), statsRow(), tableRow()],
   });
 }
 
@@ -91,24 +89,6 @@ function statsRow() {
   });
 }
 
-function formRow() {
-  return formHelper({
-    name: 'players',
-    busyWhen: isBusy(collection(PegaDocument)),
-    fields: [
-      {
-        label: 'Player Address',
-        name: 'address',
-        type: 'string',
-      },
-    ],
-    buttonLabel: 'Add',
-    multiRecord: {
-      idField: 'address',
-    },
-  });
-}
-
 export function tableRow() {
   return Fragment({
     children: [
@@ -126,47 +106,52 @@ export function tableRow() {
             sortable: true,
             searchable: true,
             format: formatTemplate('#{{ id }}', { id: '$.pegaId' }),
-            width:'100px',
+            width: '100px',
           },
           {
             id: 'name',
             sortable: true,
             searchable: true,
-            width:'200px',
+            minWidth: '300px',
           },
           {
             id: 'cost',
             title: 'Cost',
             sortable: true,
             format: formatCurrency('$.cost', '$.fiatSymbol'),
-            width:'120px',
+            width: '120px',
+            right: true,
           },
           {
             id: 'marketValue',
-            title: 'Market Value',
+            title: 'Value',
             sortable: true,
             format: formatCurrency('$.marketValue', '$.fiatSymbol'),
-            width:'120px',
+            width: '120px',
+            right: true,
           },
           {
             id: 'placeRate',
-            title: 'Place Rate',
+            title: 'Places',
             sortable: true,
             format: formatPercent('$.placeRate'),
-            width:'120px',
+            width: '120px',
+            right: true,
           },
           {
             id: 'totalRaces',
-            title: 'Total Races',
+            title: 'Races',
             sortable: true,
-            width:'120px',
+            width: '120px',
+            right: true,
           },
           {
             id: 'earned',
-            title: 'Total Earned',
+            title: 'Earned',
             sortable: true,
-            width:'120px',
+            width: '120px',
             format: formatCurrency('$.earned', '$.fiatSymbol'),
+            right: true,
           },
         ],
       }),

@@ -8,7 +8,7 @@ export class RaceDocument extends DocumentDto {
   readonly raceId: number;
   readonly position: number;
   readonly earned: number;
-  readonly class:number;
+  readonly class: number;
   readonly distance: number;
   readonly fiatSymbol: string;
 }

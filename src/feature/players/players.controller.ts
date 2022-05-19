@@ -8,7 +8,6 @@ import {
 import {
   AbstractController,
   ClientService,
-  CacheService,
   logger,
 } from '@earnkeeper/ekp-sdk-nestjs';
 import { Injectable } from '@nestjs/common';
@@ -63,15 +62,12 @@ export class PlayersController extends AbstractController {
         COLLECTION_NAME,
         _.slice(documents, 0, 100),
       );
-
-    
     } catch (error) {
       logger.error('Error occurred while handling event', error);
       console.error(error);
     } finally {
       await this.clientService.emitDone(event, COLLECTION_NAME);
     }
-
   }
 
   async onClientDisconnected(event: ClientDisconnectedEvent) {
@@ -81,5 +77,4 @@ export class PlayersController extends AbstractController {
   async onClientRpc(event: RpcEvent) {
     // Do nothing
   }
-
 }
