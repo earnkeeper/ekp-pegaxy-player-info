@@ -1,24 +1,25 @@
 import { pageHeader } from '@/util';
+import { statsCard } from '@/util/stats-card';
 import { formHelper } from '@/util/ui/form-helper';
 import {
-  Button,
   Col,
   collection,
   Container,
   Datatable,
   documents,
   formatCurrency,
-  formatDatetime,
   Fragment,
   isBusy,
+  path,
   Row,
   Span,
+  sum,
   UiElement,
 } from '@earnkeeper/ekp-sdk';
 import { RaceDocument } from './race.document';
 export default function element(): UiElement {
   return Container({
-    children: [titleRow(), formRow(), tableRow()],
+    children: [titleRow(), statsRow(), tableRow()],
   });
 }
 
@@ -34,7 +35,7 @@ function titleRow() {
               pageHeader('user', 'Player Info'),
               Span({
                 className: 'mb-2',
-                content: '0xd68962B0084596A00a227dFCC56A8245aA0679b1',
+                content: `${path(RaceDocument)}.0.playerAddress`,
               }),
             ],
           }),
@@ -44,21 +45,23 @@ function titleRow() {
   });
 }
 
-function formRow() {
-  return formHelper({
-    name: 'players',
-    busyWhen: isBusy(collection(RaceDocument)),
-    fields: [
-      {
-        label: 'Player Address',
-        name: 'address',
-        type: 'string',
-      },
+function statsRow() {
+  return Row({
+    className: 'mt-2',
+    children: [
+      Col({
+        className: 'col-auto',
+        children: [
+          statsCard(
+            'Total Earned',
+            formatCurrency(
+              sum(`${path(RaceDocument)}.*.earned`),
+              `${path(RaceDocument)}.0.fiatSymbol`,
+            ),
+          ),
+        ],
+      }),
     ],
-    buttonLabel: 'Add',
-    multiRecord: {
-      idField: 'address',
-    },
   });
 }
 
@@ -78,41 +81,41 @@ export function tableRow() {
             title: 'Date',
             sortable: true,
             searchable: true,
-            width:'150px',
+            width: '180px',
           },
           {
             id: 'raceId',
             title: 'Race',
             sortable: true,
             searchable: true,
-            width:'150px',
+            width: '150px',
           },
           {
             id: 'position',
             title: 'Position',
             sortable: true,
             grow: 0,
-            width:'100px',
+            width: '100px',
           },
           {
             id: 'earned',
             title: 'Total Earned',
             sortable: true,
             right: true,
-            width:'100px',
+            width: '100px',
             format: formatCurrency('$.earned', '$.fiatSymbol'),
           },
           {
             id: 'class',
             sortable: true,
             grow: 0,
-            width:'100px',
+            width: '100px',
           },
           {
             id: 'distance',
             sortable: true,
             right: true,
-            width:'100px',
+            width: '100px',
           },
         ],
       }),

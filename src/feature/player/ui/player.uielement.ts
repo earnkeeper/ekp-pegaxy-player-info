@@ -36,7 +36,7 @@ function titleRow() {
               pageHeader('user', 'Player Info'),
               Span({
                 className: 'mb-2',
-                content: '0xd68962B0084596A00a227dFCC56A8245aA0679b1',
+                content: `${path(PegaDocument)}.0.playerAddress`,
               }),
             ],
           }),

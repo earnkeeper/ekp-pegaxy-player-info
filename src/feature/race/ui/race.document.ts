@@ -4,6 +4,7 @@ export class RaceDocument extends DocumentDto {
   constructor(properties: RaceDocument) {
     super(properties);
   }
+  readonly playerAddress: string;
   readonly raceDate: Date;
   readonly raceId: number;
   readonly position: number;
