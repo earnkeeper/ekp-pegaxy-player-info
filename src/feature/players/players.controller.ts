@@ -8,6 +8,7 @@ import {
 import {
   AbstractController,
   ClientService,
+  CacheService,
   logger,
 } from '@earnkeeper/ekp-sdk-nestjs';
 import { Injectable } from '@nestjs/common';
@@ -46,7 +47,6 @@ export class PlayersController extends AbstractController {
     if (PATH !== event?.state?.client?.path) {
       return;
     }
-
     try {
       await this.clientService.emitBusy(event, COLLECTION_NAME);
 
@@ -63,7 +63,7 @@ export class PlayersController extends AbstractController {
         COLLECTION_NAME,
         _.slice(documents, 0, 100),
       );
-      
+
     
     } catch (error) {
       logger.error('Error occurred while handling event', error);
@@ -71,6 +71,7 @@ export class PlayersController extends AbstractController {
     } finally {
       await this.clientService.emitDone(event, COLLECTION_NAME);
     }
+
   }
 
   async onClientDisconnected(event: ClientDisconnectedEvent) {
@@ -80,4 +81,5 @@ export class PlayersController extends AbstractController {
   async onClientRpc(event: RpcEvent) {
     // Do nothing
   }
+
 }

@@ -2,7 +2,7 @@ import { ApiService, PlayerPegaDto } from '@/shared/api';
 import { CurrencyDto } from '@earnkeeper/ekp-sdk';
 import { CoingeckoService } from '@earnkeeper/ekp-sdk-nestjs';
 import { Injectable } from '@nestjs/common';
-import _ from 'lodash';
+import _, { result } from 'lodash';
 import { RaceDocument } from './ui/race.document';
 
 @Injectable()
@@ -22,37 +22,43 @@ export class RaceService {
     );
     const visRate = coinRates.find((it) => it.coinId === 'vigorus')?.price;
     const documents = await this.apiService.fetchUserOwnedPegas(playerAddress);
-    let raceDate;
+    let date;
     let raceId= 0;
     let position= 0;
     let earned= 0;  
 
     const promiseDocuments: RaceDocument[] = documents.map(async (document) => {
       const pegaRaceResultSet  = await this.apiService.fetchPegaRaceHistory(document.id);
-      console.log(pegaRaceResultSet);
       if (pegaRaceResultSet) {
         for (let key of Object.keys(pegaRaceResultSet)) {
           let result = pegaRaceResultSet[key];
-          raceDate= result.updatedAt;
-          raceId= result.raceId;
-          position= result.position;
-          earned= result.reward;
+          if (Array.isArray(result)){
+            for (let key of Object.keys(result)) {
+              let data = result[key];
+              date= data.updatedAt.match(/.{1,10}/g) || [];
+              raceId= data.raceId;
+              position= data.position;
+              earned= data.reward;
+            }
+          }
         }
       }
+    
+
       const updatedDocument: RaceDocument = {
-        raceDate,
+        raceDate: date[0],
         raceId,
         position,
-        earned,
+        earned: earned* visRate,
         class: document.reward,
-        distance: document.reward,
+        distance: date[1],
         fiatSymbol: currency.symbol,
         id: ''
       };
       return updatedDocument;
     });
     const updatedDocuments: any = await Promise.all(promiseDocuments);
-    //console.log(updatedDocuments);
+    console.log(updatedDocuments);
     return updatedDocuments;
   }
 }
