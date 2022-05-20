@@ -3,6 +3,7 @@ export type PlayerPegaDto = Readonly<{
   name: string;
   ownerAddress: string;
   renterAddress: string;
+  class: number;
   ownerPegaRewards: number;
   renterPegaRewards: number;
   lastRenterAddress: string;

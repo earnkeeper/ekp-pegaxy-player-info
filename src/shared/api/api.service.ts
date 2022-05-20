@@ -7,6 +7,7 @@ import { PegaRaceHistoryResponseDto } from './dto/pega-race-history.dto';
 import { PlayerAssetsDto } from './dto/player-assets.dto';
 import { PlayerEarningsDto } from './dto/player-earnings.dto';
 import { PlayerPegaDto } from './dto/player-pega.dto';
+import { RacesResponseDto } from './dto/race-detail.dto';
 
 @Injectable()
 export class ApiService {
@@ -110,4 +111,24 @@ export class ApiService {
       .retry()
       .get(url, (response) => response.data);
   }
+  async fetchPegaGameDetail(pegaId: number): Promise<PlayerPegaDto> {
+    const url = `https://api-apollo.pegaxy.io/v1/game-api/pega/${pegaId}`;
+
+    return await this.apiBuilder()
+      .limit()
+      .cache(300)
+      .retry()
+      .get(url, (response) => response.data);
+  }
+
+  async fetchRaceDetail(raceId: number): Promise<RacesResponseDto> {
+    const url = `https://api-apollo.pegaxy.io/v1/game-api/race/details/${raceId}`;
+
+    return await this.apiBuilder()
+      .limit()
+      .cache(300)
+      .retry()
+      .get(url, (response) => response.data);
+  }
+  
 }

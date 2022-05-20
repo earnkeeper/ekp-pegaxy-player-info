@@ -34,7 +34,7 @@ export class RaceService {
       ),
     );
 
-    return _.flatMap(documents);
+    return _.flatMap(Promise.all(documents));
   }
 
   async mapDocumentsForPega(
@@ -44,13 +44,17 @@ export class RaceService {
     playerAddress: string,
   ) {
     const response = await this.apiService.fetchPegaRaceHistory(pega.id);
-
     const raceHistoryDtos = response.data;
 
-    const raceDocuments = raceHistoryDtos.map((dto) => {
+    const pegaInfo = await this.apiService.fetchPegaGameDetail(pega.id);
+    const pegaClass = pegaInfo.class;
+    console.log(pegaClass);
+    const raceDocuments = raceHistoryDtos.map(async (dto) => {
+      const racesResponse = await this.apiService.fetchRaceDetail(dto.id);
+      const distance = racesResponse.race.length;
       const document: RaceDocument = {
-        class: undefined,
-        distance: undefined,
+        class: pegaClass,
+        distance,
         earned: dto.reward,
         earnedFiat: dto.reward * visRate,
         fiatSymbol: currency.symbol,
@@ -59,10 +63,8 @@ export class RaceService {
         position: dto.position,
         timestamp: moment(dto.updatedAt).unix(),
       };
-
       return document;
     });
-
     return raceDocuments;
   }
 }

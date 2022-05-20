@@ -8,6 +8,7 @@ import {
   Datatable,
   documents,
   formatCurrency,
+  formatDatetime,
   Fragment,
   isBusy,
   path,
@@ -77,14 +78,15 @@ export function tableRow() {
         busyWhen: isBusy(collection(RaceDocument)),
         columns: [
           {
-            id: 'raceDate',
+            id: 'timestamp',
             title: 'Date',
             sortable: true,
             searchable: true,
             width: '180px',
+            format: formatDatetime('$.timestamp'),
           },
           {
-            id: 'raceId',
+            id: 'id',
             title: 'Race',
             sortable: true,
             searchable: true,
