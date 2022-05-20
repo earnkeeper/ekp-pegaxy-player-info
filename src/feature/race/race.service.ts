@@ -37,31 +37,26 @@ export class RaceService {
     const pegaRaceResultSet = await this.apiService.fetchPegaRaceHistory(
       pega.id,
     );
+    delete pegaRaceResultSet['status'];
     if (pegaRaceResultSet) {
       for (const key of Object.keys(pegaRaceResultSet)) {
         let result = pegaRaceResultSet[key];
         let arr = Object.entries(result);
-        arr = arr.splice(0, 1);
-        console.log(arr);
-        switch (arr.length === 0) {
-          case true:
-            console.log('Here');
-            break;
-          default:
-            for (const key of Object.keys(result)) {
-              const data = result[key];
-              let dt = data.updatedAt.substr(0, 10);
-              let tm = data.updatedAt.substr(11, 5);
-              date = dt + ' ' + tm;
-              raceId = data.raceId;
-              position = data.position;
-              earned = data.reward;
-            }
-            break;
+        if (arr.length === 0) {
+          console.log('Here');
+        } else {
+          for (const key of Object.keys(result)) {
+            const data = result[key];
+            let dt = data.updatedAt.substr(0, 10);
+            let tm = data.updatedAt.substr(11, 5);
+            date = dt + ' ' + tm;
+            raceId = data.raceId;
+            position = data.position;
+            earned = data.reward;
+          }
         }
       }
     }
-
     const updatedDocument: RaceDocument = {
       raceDate: date,
       raceId,
@@ -73,7 +68,7 @@ export class RaceService {
       id: '',
       playerAddress,
     };
-    //console.log(updatedDocument);
+    console.log(updatedDocument);
     return updatedDocument;
   }
 }
