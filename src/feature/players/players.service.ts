@@ -47,7 +47,6 @@ export class PlayersService {
           playerEarnings.fixedRentalPgx;
 
         let earnedLast24Hours = 0;
-        // cost calculation
         if (pegaCost.length > 0) {
           for (let key of Object.keys(pegaCost)) {
             let result = pegaCost[key];
@@ -56,7 +55,7 @@ export class PlayersService {
         } else {
           cost = 0;
         }
-        //player earnings in 24 Hours
+
         for (let key of Object.keys(playerEarningsIn24)) {
           let result = playerEarningsIn24[key];
           earnedLast24Hours =
@@ -72,11 +71,9 @@ export class PlayersService {
         for (let key of Object.keys(playerPegas)) {
           let results = playerPegas[key];
 
-          //check raceability
           if (results.canRaceAt < moment().unix()) {
             canRace = 1;
           }
-          //check breedability
           if (results.canBreedAt < moment().unix()) {
             canBreed = 1;
           }
