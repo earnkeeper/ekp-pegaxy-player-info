@@ -3,6 +3,7 @@ import { CacheService, EkConfigService } from '@earnkeeper/ekp-sdk-nestjs';
 import { Injectable } from '@nestjs/common';
 import moment from 'moment';
 import { PegaEarningsDto } from './dto/pega-earnings.dto';
+import { PegaGameDto } from './dto/pega-game.dto';
 import { PegaRaceHistoryResponseDto } from './dto/pega-race-history.dto';
 import { PlayerAssetsDto } from './dto/player-assets.dto';
 import { PlayerEarningsDto } from './dto/player-earnings.dto';
@@ -111,7 +112,7 @@ export class ApiService {
       .retry()
       .get(url, (response) => response.data);
   }
-  async fetchPegaGameDetail(pegaId: number): Promise<PlayerPegaDto> {
+  async fetchPegaGameDetail(pegaId: number): Promise<PegaGameDto> {
     const url = `https://api-apollo.pegaxy.io/v1/game-api/pega/${pegaId}`;
 
     return await this.apiBuilder()
@@ -130,5 +131,4 @@ export class ApiService {
       .retry()
       .get(url, (response) => response.data);
   }
-  
 }

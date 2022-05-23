@@ -47,16 +47,12 @@ export class PlayerService {
     let earnedToDate = 0;
     const placeRate = (pega.win / pega.totalRaces) * 100;
 
-    //check raceability
     if (pega.canRaceAt < now) {
       canRace = 1;
     }
-
-    //check breedability
     if (pega.canBreedAt < now) {
       canBreed = 1;
     }
-
     const [earnedToDateResultSet, marketFloorResultSet] = await Promise.all([
       this.apiService.fetchPegaEarnings(pega.id),
       this.apiService.fetchMarketVaule(
@@ -68,21 +64,18 @@ export class PlayerService {
         canRace,
       ),
     ]);
-
     if (marketFloorResultSet) {
       for (const key of Object.keys(marketFloorResultSet)) {
         const r = marketFloorResultSet[key];
         pegaMarketValue = r.price;
       }
     }
-
     if (earnedToDateResultSet) {
       for (const key of Object.keys(earnedToDateResultSet)) {
         const r = earnedToDateResultSet[key];
         earnedToDate = earnedToDate + r.ownerPegaRewards + r.renterPegaRewards;
       }
     }
-
     const updatedDocument: PegaDocument = {
       id: `${pega.id}`,
       updated: now,

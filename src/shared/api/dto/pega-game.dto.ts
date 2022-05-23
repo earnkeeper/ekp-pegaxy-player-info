@@ -1,8 +1,13 @@
-export type PlayerPegaDto = Readonly<{
+export type PegaGameDto = Readonly<{
+  status: string;
+  pega: PegaDto;
+}>;
+export type PegaDto = Readonly<{
   id: number;
   name: string;
   ownerAddress: string;
   renterAddress: string;
+  class: number;
   ownerPegaRewards: number;
   renterPegaRewards: number;
   lastRenterAddress: string;

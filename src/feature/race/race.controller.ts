@@ -20,10 +20,7 @@ const PATH = 'race';
 
 @Injectable()
 export class RaceController extends AbstractController {
-  constructor(
-    clientService: ClientService,
-    private raceService: RaceService,
-  ) {
+  constructor(clientService: ClientService, private raceService: RaceService) {
     super(clientService);
   }
 
@@ -46,7 +43,10 @@ export class RaceController extends AbstractController {
 
       const playerAddress = event.state.client.path.replace(`${PATH}/`, '');
 
-      const documents = await this.raceService.fetchDocuments(currency, playerAddress);
+      const documents = await this.raceService.fetchDocuments(
+        currency,
+        playerAddress,
+      );
 
       await this.clientService.emitDocuments(event, COLLECTION_NAME, documents);
     } catch (error) {

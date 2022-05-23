@@ -97,8 +97,6 @@ export class PlayersService {
           }
         }
 
-        console.log('Total Market Value ' + marketValue);
-
         const earnedVisFiat = earnedVis * visRate;
         earnedLast24Hours = earnedLast24Hours * visRate;
         marketValue = marketValue * visRate;

@@ -3,7 +3,7 @@ import { PlayerPegaDto } from '@/shared/api/dto/player-pega.dto';
 import { CurrencyDto } from '@earnkeeper/ekp-sdk';
 import { CoingeckoService } from '@earnkeeper/ekp-sdk-nestjs';
 import { Injectable } from '@nestjs/common';
-import _ from 'lodash';
+import _, { result } from 'lodash';
 import moment from 'moment';
 import { RaceDocument } from './ui/race.document';
 
@@ -34,7 +34,7 @@ export class RaceService {
       ),
     );
 
-    return _.flatMap(Promise.all(documents));
+    return _.flatMap(documents);
   }
 
   async mapDocumentsForPega(
@@ -44,13 +44,14 @@ export class RaceService {
     playerAddress: string,
   ) {
     const response = await this.apiService.fetchPegaRaceHistory(pega.id);
-    const raceHistoryDtos = response.data;
+    let raceHistoryDtos = response.data;
+    raceHistoryDtos = raceHistoryDtos.splice(0, 10);
 
     const pegaInfo = await this.apiService.fetchPegaGameDetail(pega.id);
-    const pegaClass = pegaInfo.class;
-    console.log(pegaClass);
-    const raceDocuments = raceHistoryDtos.map(async (dto) => {
-      const racesResponse = await this.apiService.fetchRaceDetail(dto.id);
+    const pegaClass = pegaInfo.pega.class;
+
+    const raceDocumentsPromises = raceHistoryDtos.map(async (dto) => {
+      const racesResponse = await this.apiService.fetchRaceDetail(dto.raceId);
       const distance = racesResponse.race.length;
       const document: RaceDocument = {
         class: pegaClass,
@@ -58,13 +59,14 @@ export class RaceService {
         earned: dto.reward,
         earnedFiat: dto.reward * visRate,
         fiatSymbol: currency.symbol,
-        id: `${dto.id}`,
+        id: `${dto.raceId}`,
         playerAddress,
         position: dto.position,
         timestamp: moment(dto.updatedAt).unix(),
       };
       return document;
     });
+    const raceDocuments = await Promise.all(raceDocumentsPromises);
     return raceDocuments;
   }
 }

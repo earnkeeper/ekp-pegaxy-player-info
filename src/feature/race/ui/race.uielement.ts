@@ -56,7 +56,7 @@ function statsRow() {
           statsCard(
             'Total Earned',
             formatCurrency(
-              sum(`${path(RaceDocument)}.*.earned`),
+              sum(`${path(RaceDocument)}.*.earnedFiat`),
               `${path(RaceDocument)}.0.fiatSymbol`,
             ),
           ),
@@ -101,11 +101,11 @@ export function tableRow() {
           },
           {
             id: 'earned',
-            title: 'Total Earned',
+            title: 'Earned',
             sortable: true,
             right: true,
             width: '100px',
-            format: formatCurrency('$.earned', '$.fiatSymbol'),
+            format: formatCurrency('$.earnedFiat', '$.fiatSymbol'),
           },
           {
             id: 'class',

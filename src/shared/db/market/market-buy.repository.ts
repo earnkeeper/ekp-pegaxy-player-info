@@ -22,8 +22,7 @@ export class MarketBuyRepository {
   }
 
   async fetchPegaCost(buyer) {
-    const rawData = await this.manager
-      .query(`SELECT DISTINCT
+    const rawData = await this.manager.query(`SELECT DISTINCT
       id,created,price, price_coin_id
       FROM public.market_buys 
       WHERE buyer_address = '${buyer}' 
