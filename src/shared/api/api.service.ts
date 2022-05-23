@@ -39,7 +39,7 @@ export class ApiService {
 
   async fetchPegaEarnings(pegaId: number): Promise<PegaEarningsDto> {
     const startDate = 1609502400;
-    const endDate = moment().unix(); // 1652945433 (for testing)
+    const endDate = moment().unix(); 
 
     const url = `https://api-apollo.pegaxy.io/v1/pegas/${pegaId}/earnings?since=${startDate}&to=${endDate}`;
 
