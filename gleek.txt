@@ -2,6 +2,7 @@
 PlayerController
 	-clientService: ClientService
 	-playersService: PlayersService
+	-raceService: RaceService
 	+onClientStateChanged()
 	+onClientConnected()
 PlayerService
@@ -50,6 +51,27 @@ PlayersService --> PlayersDocument
 PlayersService --> ApiService
 PlayersService --> MarketBuyRepository
 PlayersUI --> PlayersDocument
+PlayerUI --> RaceUI
+PlayerController --> RaceService
+
+// *** RACE ***
+RaceService
+	-apiService: ApiService
+	-coingeckoService: CoingeckoService
+RaceDocument
+	-class: number
+	-distance: number
+	-earned: number
+	-earnedFiat: number
+	-fiatSymbol: string
+	-playerAddress:string
+	-position: number
+	-timestamp: number
+RaceUI
+	+element()
+RaceService --> RaceDocument
+RaceService --> ApiService
+RaceUI --> RaceDocument
 
 // *** MARKET HISTORY ***
 MarketHistoryController
@@ -66,27 +88,27 @@ MarketHistoryService
 	+fetchMarketDocuments()
 	+mapToDocuments()
 MarketHistoryDocument
-	-bloodline: string;
-	-breedType: string;
+	-bloodline: string
+	-breedType: string
 	-buyer: string
-	-class: number;
+	-class: number
 	-fiatSymbol: string
-	-gender: string;
+	-gender: string
 	-pegaAvatarId: string
-	-pegaAvatarId1: string;
-	-pegaAvatarId2: string;
+	-pegaAvatarId1: string
+	-pegaAvatarId2: string
 	-pegaId: number
 	-pegaName: string
 	-priceFiat: number
 	-timestamp: number
 MarketHistoryUI
 	-element()
-MarketBuysController --> MarketBuysService
-MarketBuysController --> MarketBuysUI
-MarketBuysController --> MarketBuysDocument
-MarketBuysService --> MarketBuysDocument
-MarketBuysUI --> MarketBuysDocument
-MarketBuysService --> MarketBuyRepository 
+MarketHistoryController --> MarketHistoryService
+MarketHistoryController --> MarketHistoryUI
+MarketHistoryController --> MarketHistoryDocument
+MarketHistoryService --> MarketHistoryDocument
+MarketHistoryUI --> MarketHistoryDocument
+MarketHistoryService --> MarketHistoryRepository 
 
 // *** MARKET BUY DB ***
 MarketBuy
@@ -104,38 +126,41 @@ MarketBuyRepository
 	+findAll()
 	+fetchPegaCost()
 	+save()
-MarketBuyRepository -->MarketBuy
-//MARKET ALERT
+MarketBuyRepository --> MarketBuy
+
+// *** MARKET ALERT ***
 MarketAlertRepository
 	-pegaRepository: Repository
 	+findAll()
 	+save()
 MarketAlertConfig
-	-bloodline: string;
-  	-breed: string;
-  	-gender: string;
-   	-price_min: number;
-	-price_max: number;
-	-alert_address: number;
-	-alert_discord_id: number;
+	-bloodLine: string
+	-breed: string
+	-gender: string
+	-price_min: number
+	-price_max: number
+	-alert_address: number
+	-alert_discord_id: number
+MarketAlertRepository --> MarketAlertConfig
+
 // *** PEGA DB ***
 Pega
 	-avatar_id_1: string
 	-avatar_id_2: string
-	-bloodline: string;
-	-breed_type: string;
-	-class: number;
+	-bloodline: string
+	-breed_type: string
+	-class: number
 	-cost_coin_id: string
 	-cost: string
 	-created: Date
 	-earned_to_date_coin_id: string
 	-earned_to_date: string
-	-father_id: number;
-	-gender: string;
+	-father_id: number
+	-gender: string
 	-id: number
 	-market_value_coin_id: string
 	-market_value: string
-	-mother_id: number;
+	-mother_id: number
 	-name: string
 	-owner_player_id: string
 	-place_rate: number
@@ -145,6 +170,7 @@ PegaRepository
 	+findLatest()
 	+save()
 PegaRepository -->Pega
+
 // *** PLAYER DB ***
 Player
 	-id: string
@@ -157,14 +183,21 @@ PlayerRepository
 	+findLatest()
 	+save()
 PlayerRepository -->Player
+
 // *** API SERVICE ***
 ApiService
 	-configService: EkConfigService
 	-cacheService: CacheService
-	+apiBuilder()
-	+fetchUserAssets()
-	+fetchUserOwnedPegas()
-	+fetchUserEarnings()
+	+apiBuilder
+	+fecthUserAssets
+	+fetchMarketVaule
+	+fetchPegaEarnings
+	+fetchPegaGameDetail
+	+fetchPegaRaceHistory
+	+fetchRaceDetail
+	+fetchUserEarnings
+	+fetchUserEarningsInLast24h
+	+fetchUserOwnedPegas
 ApiBuilder
 	-configService: EkConfigService
 	-cacheService: CacheService
