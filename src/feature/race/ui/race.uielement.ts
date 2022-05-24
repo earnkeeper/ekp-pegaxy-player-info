@@ -1,4 +1,4 @@
-import { pageHeader } from '@/util';
+import { pageHeader } from '@/util/ui';
 import { statsCard } from '@/util/stats-card';
 import { formHelper } from '@/util/ui/form-helper';
 import {
@@ -20,29 +20,7 @@ import {
 import { RaceDocument } from './race.document';
 export default function element(): UiElement {
   return Container({
-    children: [titleRow(), statsRow(), tableRow()],
-  });
-}
-
-function titleRow() {
-  return Fragment({
-    children: [
-      Row({
-        className: 'mb-2',
-        children: [
-          Col({
-            className: 'col-auto',
-            children: [
-              pageHeader('user', 'Player Info'),
-              Span({
-                className: 'mb-2',
-                content: `${path(RaceDocument)}.0.playerAddress`,
-              }),
-            ],
-          }),
-        ],
-      }),
-    ],
+    children: [statsRow(), tableRow()],
   });
 }
 

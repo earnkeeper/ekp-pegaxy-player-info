@@ -1,3 +1,5 @@
+import { RaceService } from './../race/race.service';
+import { RaceDocument } from './../race/ui/race.document';
 import {
   ClientConnectedEvent,
   ClientDisconnectedEvent,
@@ -15,7 +17,8 @@ import { PlayerService } from './player.service';
 import { PegaDocument } from './ui/pega.document';
 import page from './ui/player.uielement';
 
-const COLLECTION_NAME = collection(PegaDocument);
+const PEGA_COLLECTION_NAME = collection(PegaDocument);
+const RACE_COLLECTION_NAME = collection(RaceDocument);
 const PATH = 'player';
 
 @Injectable()
@@ -23,6 +26,7 @@ export class PlayerController extends AbstractController {
   constructor(
     clientService: ClientService,
     private playerService: PlayerService,
+    private raceService: RaceService,
   ) {
     super(clientService);
   }
@@ -40,23 +44,38 @@ export class PlayerController extends AbstractController {
     }
 
     try {
-      await this.clientService.emitBusy(event, COLLECTION_NAME);
+      await this.clientService.emitBusy(event, PEGA_COLLECTION_NAME);
+      await this.clientService.emitBusy(event, RACE_COLLECTION_NAME);
 
       const currency = event.state.client.selectedCurrency;
 
       const playerAddress = event.state.client.path.replace(`${PATH}/`, '');
 
-      const documents = await this.playerService.fetchDocuments(
+      const pegaDocuments = await this.playerService.fetchDocuments(
         currency,
         playerAddress,
       );
+      await this.clientService.emitDocuments(
+        event,
+        PEGA_COLLECTION_NAME,
+        pegaDocuments,
+      );
 
-      await this.clientService.emitDocuments(event, COLLECTION_NAME, documents);
+      const raceDocuments = await this.raceService.fetchDocuments(
+        currency,
+        playerAddress,
+      );
+      await this.clientService.emitDocuments(
+        event,
+        RACE_COLLECTION_NAME,
+        raceDocuments,
+      );
     } catch (error) {
       logger.error('Error occurred while handling event', error);
       console.error(error);
     } finally {
-      await this.clientService.emitDone(event, COLLECTION_NAME);
+      await this.clientService.emitDone(event, PEGA_COLLECTION_NAME);
+      await this.clientService.emitDone(event, RACE_COLLECTION_NAME);
     }
   }
 

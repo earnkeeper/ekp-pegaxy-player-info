@@ -4,7 +4,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { MarketHistoryModule } from './feature/market-history/market-history.module';
 import { PlayerModule } from './feature/player/player.module';
-import { PlayerInfoModule } from './feature/players-info/player-info.module';
 import { PlayersModule } from './feature/players/players.module';
 import { RaceModule } from './feature/race/race.module';
 import { DbModule } from './shared/db';
@@ -28,7 +27,6 @@ export const MODULE_DEF = {
     PlayerModule,
     DbModule,
     RaceModule,
-    PlayerInfoModule,
     SdkModule,
   ],
 };

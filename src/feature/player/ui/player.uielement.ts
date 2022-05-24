@@ -1,4 +1,4 @@
-import { pageHeader } from '@/util';
+import { pageHeader } from '@/util/ui';
 import { statsCard } from '@/util/stats-card';
 import {
   Col,
@@ -20,6 +20,7 @@ import {
   UiElement,
 } from '@earnkeeper/ekp-sdk';
 import { PegaDocument } from './pega.document';
+import raceUielement from '../../race/ui/race.uielement';
 export default function element(): UiElement {
   return Container({
     children: [
@@ -32,7 +33,7 @@ export default function element(): UiElement {
           },
           {
             label: 'Races',
-            children: [],
+            children: [raceUielement()],
           },
         ],
       }),
