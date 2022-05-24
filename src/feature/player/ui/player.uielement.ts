@@ -5,6 +5,7 @@ import {
   collection,
   Container,
   Datatable,
+  DefaultProps,
   documents,
   formatCurrency,
   formatPercent,
@@ -13,6 +14,7 @@ import {
   isBusy,
   path,
   Row,
+  Rpc,
   Span,
   sum,
   UiElement,
@@ -20,7 +22,21 @@ import {
 import { PegaDocument } from './pega.document';
 export default function element(): UiElement {
   return Container({
-    children: [titleRow(), statsRow(), tableRow()],
+    children: [
+      titleRow(),
+      Tabs({
+        children: [
+          {
+            label: 'Pegas',
+            children: [statsRow(), tableRow()],
+          },
+          {
+            label: 'Races',
+            children: [],
+          },
+        ],
+      }),
+    ],
   });
 }
 
@@ -158,3 +174,19 @@ export function tableRow() {
     ],
   });
 }
+
+export function Tabs(props: TabsProps): UiElement {
+  return {
+    _type: 'Tabs',
+    props: props,
+  };
+}
+
+export interface TabsProps extends DefaultProps {
+  readonly children: Tab[];
+}
+
+export type Tab = Readonly<{
+  label: string | Rpc;
+  children: UiElement[];
+}>;
