@@ -8,6 +8,7 @@ PlayerService
 	-apiService: ApiService
 	-coingeckoService: CoingeckoService
 	+fetchDocuments()
+	+mapDocument()
 PegaDocument
 	-address: string
 	-earnedVisFiat: number
@@ -31,6 +32,7 @@ PlayersController
 	+onClientConnected()
 PlayersService
 	-apiService: ApiService
+	-marketBuyRepository: MarketBuyRepository
 	-coingeckoService: CoingeckoService
 	+fetchDocuments()
 PlayersDocument
@@ -46,30 +48,38 @@ PlayersController --> PlayersUI
 PlayersController --> PlayersDocument
 PlayersService --> PlayersDocument
 PlayersService --> ApiService
+PlayersService --> MarketBuyRepository
 PlayersUI --> PlayersDocument
 
-// *** MARKET BUYS ***
-MarketBuysController
+// *** MARKET HISTORY ***
+MarketHistoryController
 	-clientService: ClientService
 	-marketBuysService: MarketBuysService
 	-apmService: ApmService
 	+onClientStateChanged()
 	+onClientConnected()
-MarketBuysService
+MarketHistoryService
 	-marketBuyRepository: MarketBuyRepository
 	-coingeckoService: CoingeckoService
+	-apiService: ApiService
 	+fetchMarketHistogram()
 	+fetchMarketDocuments()
 	+mapToDocuments()
-MarketBuysDocument
+MarketHistoryDocument
+	-bloodline: string;
+	-breedType: string;
 	-buyer: string
+	-class: number;
 	-fiatSymbol: string
+	-gender: string;
+	-pegaAvatarId: string
+	-pegaAvatarId1: string;
+	-pegaAvatarId2: string;
 	-pegaId: number
 	-pegaName: string
 	-priceFiat: number
 	-timestamp: number
-	-pegaAvatarId: string
-MarketBuysUI
+MarketHistoryUI
 	-element()
 MarketBuysController --> MarketBuysService
 MarketBuysController --> MarketBuysUI
@@ -90,26 +100,47 @@ MarketBuy
 	-pega: Pega
 MarketBuyRepository
 	-repo: Repository
+	-manager: EntityManager
 	+findAll()
+	+fetchPegaCost()
 	+save()
 MarketBuyRepository -->MarketBuy
+//MARKET ALERT
+MarketAlertRepository
+	-pegaRepository: Repository
+	+findAll()
+	+save()
+MarketAlertConfig
+	-bloodline: string;
+  	-breed: string;
+  	-gender: string;
+   	-price_min: number;
+	-price_max: number;
+	-alert_address: number;
+	-alert_discord_id: number;
 // *** PEGA DB ***
 Pega
-	-id: number
-	-created: Date
-	-updated: Date
-	-name: string
-	-cost: string
-	-cost_coin_id: string
-	-market_value: string
-	-market_value_coin_id: string
-	-earned_to_date: string
-	-earned_to_date_coin_id: string
-	-place_rate: number
-	-total_races: number
-	-owner_player_id: string
 	-avatar_id_1: string
 	-avatar_id_2: string
+	-bloodline: string;
+	-breed_type: string;
+	-class: number;
+	-cost_coin_id: string
+	-cost: string
+	-created: Date
+	-earned_to_date_coin_id: string
+	-earned_to_date: string
+	-father_id: number;
+	-gender: string;
+	-id: number
+	-market_value_coin_id: string
+	-market_value: string
+	-mother_id: number;
+	-name: string
+	-owner_player_id: string
+	-place_rate: number
+	-total_races: number
+	-updated: Date
 PegaRepository
 	+findLatest()
 	+save()
