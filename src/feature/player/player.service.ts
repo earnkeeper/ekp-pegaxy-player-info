@@ -29,7 +29,7 @@ export class PlayerService {
     const now = moment().unix();
 
     const documents = await Promise.all(
-      pegas.map((pega) => this.mapDocument(pega, visRate, currency, now)),
+      pegas.map((pega) => this.mapDocument(pega, visRate, currency, now, playerAddress)),
     );
 
     return documents;
@@ -40,6 +40,7 @@ export class PlayerService {
     visRate: number,
     currency: CurrencyDto,
     now: number,
+    playerAddress: string,
   ) {
     let pegaMarketValue = 0;
     let canRace = 0;
@@ -87,6 +88,7 @@ export class PlayerService {
       pegaId: pega.id,
       placeRate,
       totalRaces: pega.totalRaces,
+      playerAddress,
     };
     return updatedDocument;
   }

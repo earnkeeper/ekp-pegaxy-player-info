@@ -7,5 +7,6 @@ import { RaceService } from './race.service';
 @Module({
   imports: [ApiModule, DbModule],
   providers: [RaceController, RaceService],
+  exports: [RaceService],
 })
 export class RaceModule {}

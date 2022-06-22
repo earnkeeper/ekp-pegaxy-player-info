@@ -12,4 +12,5 @@ export class PegaDocument extends DocumentDto {
   readonly totalRaces: number;
   readonly earned: number;
   readonly fiatSymbol: string;
+  readonly playerAddress: string;
 }

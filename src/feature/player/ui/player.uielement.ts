@@ -19,6 +19,7 @@ import {
   sum,
   UiElement,
 } from '@earnkeeper/ekp-sdk';
+import raceUi from '../../race/ui/race.uielement';
 import { PegaDocument } from './pega.document';
 export default function element(): UiElement {
   return Container({
@@ -32,7 +33,7 @@ export default function element(): UiElement {
           },
           {
             label: 'Races',
-            children: [],
+            children: [raceUi()],
           },
         ],
       }),

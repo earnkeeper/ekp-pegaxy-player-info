@@ -20,7 +20,7 @@ import {
 import { RaceDocument } from './race.document';
 export default function element(): UiElement {
   return Container({
-    children: [titleRow(), statsRow(), tableRow()],
+    children: [statsRow(), tableRow()],
   });
 }
 
